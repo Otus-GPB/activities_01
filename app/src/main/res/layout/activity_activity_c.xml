@@ -4,6 +4,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/ActivityC"
     tools:context=".ActivityC">
-
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarC"
+        android:layout_width="match_parent"
+        android:layout_height="?android:actionBarSize"
+        android:background="@color/purple_700"
+        app:title="Activity C"
+        app:titleTextColor="@color/white"
+        app:navigationIconTint="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <Button
+        android:id="@+id/GoActivityD"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/goActivityD"
+        android:backgroundTint="@color/purple_700"
+        app:layout_constraintWidth_percent="0.7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <Button
+        android:id="@+id/GoActivityA"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/goActivityA"
+        android:backgroundTint="@color/purple_700"
+        app:layout_constraintWidth_percent="0.7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/GoActivityD"
+        />
+    <Button
+        android:id="@+id/closeActivityC"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/closeActivityC"
+        android:backgroundTint="@color/purple_700"
+        android:layout_marginTop="30dp"
+        app:layout_constraintWidth_percent="0.7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/GoActivityA"
+        />
+    <Button
+        android:id="@+id/closeStack"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/closeStack"
+        android:backgroundTint="@color/purple_700"
+        app:layout_constraintWidth_percent="0.7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/closeActivityC"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
