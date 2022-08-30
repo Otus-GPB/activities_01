@@ -8,4 +8,5 @@ class ActivityD : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_activity_d)
     }
+
 }

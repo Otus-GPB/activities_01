@@ -15,19 +15,27 @@
         tools:targetApi="31">
         <activity
             android:name=".ActivityD"
-            android:exported="false" />
+            android:exported="false"
+            android:taskAffinity="com.task2.activity"
+
+            android:launchMode="singleTask" />
         <activity
             android:name=".ActivityC"
-            android:exported="false" />
+            android:exported="false"
+            android:taskAffinity="com.task2.activity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".ActivityB"
-            android:exported="false" />
+            android:exported="false"
+            android:taskAffinity="com.task2.activity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".ActivityA"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleInstance"
+          >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
