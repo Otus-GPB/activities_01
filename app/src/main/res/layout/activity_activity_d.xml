@@ -10,7 +10,7 @@
         android:id="@+id/toolbarD"
         android:layout_width="match_parent"
         android:layout_height="?android:actionBarSize"
-        android:background="@color/purple_700"
+        android:background="@color/mytoolbar"
         app:title="Activity D"
         app:titleTextColor="@color/white"
         app:navigationIconTint="@color/white"

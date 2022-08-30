@@ -7,6 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="mytoolbar">#36000000</color>
+    <color name="myButton">#4D000000</color>
     <color name="ActivityA">#f44336</color>
     <color name="ActivityB">#4caf50</color>
     <color name="ActivityC">#2196f3</color>
