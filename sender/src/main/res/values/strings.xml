@@ -3,4 +3,8 @@
     <string name="open_receiver_text">Open Receiver</string>
     <string name="send_email_text">Send Email</string>
     <string name="to_google_maps_text">To Google Maps</string>
+    <string name="chooser_title">Send email with</string>
+    <string name="email_recipient">android@otus.tu</string>
+    <string name="email_subject">Homework Activities_02</string>
+    <string name="email_text">Hello, Otus!</string>
 </resources>
