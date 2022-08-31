@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/aC"
+    tools:context=".ActivityA">
+
+    <Button
+        android:id="@+id/buttonC_A"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Open ActivityA"
+        app:layout_constraintBottom_toTopOf="@id/buttonC_D"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonC_D"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Open ActivityD"
+        app:layout_constraintBottom_toTopOf="@id/buttonC_C"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonC_A" />
+
+    <Button
+        android:id="@+id/buttonC_C"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Close ActivityC"
+        app:layout_constraintBottom_toTopOf="@id/buttonC_Stack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonC_D" />
+
+    <Button
+        android:id="@+id/buttonC_Stack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Close Stack"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
