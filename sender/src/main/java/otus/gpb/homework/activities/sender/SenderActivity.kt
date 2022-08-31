@@ -19,7 +19,7 @@ class SenderActivity : AppCompatActivity() {
             startActivity(
                 Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse("geo:0.0&q=Рестораны")
+                    Uri.parse("geo:0.0.0?q=Рестораны")
                 ).setPackage("com.google.android.apps.maps"))
         }
 
@@ -33,7 +33,14 @@ class SenderActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.open_receiver).setOnClickListener {
-
+            startActivity(
+                Intent(Intent.ACTION_SEND)
+                    .addCategory(Intent.CATEGORY_DEFAULT)
+                    .putExtra("title", "Интерстеллар")
+                    .putExtra("year", "2014")
+                    .putExtra("description", "Когда засуха, пыльные бури и вымирание растений приводят человечество к продовольственному кризису, коллектив исследователей и учёных отправляется сквозь червоточину (которая предположительно соединяет области пространства-времени через большое расстояние) в путешествие, чтобы превзойти прежние ограничения для космических путешествий человека и найти планету с подходящими для человечества условиями.")
+                    .setType("text/plain")
+            )
         }
     }
 }
