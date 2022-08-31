@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Sender</string>
+    <string name="toolbarSender">Sender Activity</string>
+    <string name="btn_toGoogleMaps">To Google Maps</string>
+    <string name="btn_sendEmail">Send Email</string>
+    <string name="btn_openReceiver">Open Receiver</string>
 </resources>

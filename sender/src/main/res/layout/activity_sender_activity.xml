@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SenderActivity">
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarSender"
+        android:layout_width="match_parent"
+        android:layout_height="?android:actionBarSize"
+        android:background="@color/black"
+        app:title="@string/toolbarSender"
+        app:titleTextColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <Button
+        android:id="@+id/btn_gotoGoogleMaps"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/btn_style"
+        android:backgroundTint="#C2E4BE"
+        android:text="@string/btn_toGoogleMaps"
+        app:layout_constraintWidth_percent="0.7"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    <Button
+        android:id="@+id/btn_sendEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/btn_style"
+        android:backgroundTint="@color/sendEmail"
+        android:text="@string/btn_sendEmail"
+        app:layout_constraintWidth_percent="0.7"
+        app:layout_constraintTop_toBottomOf="@id/btn_gotoGoogleMaps"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    <Button
+        android:id="@+id/btn_openReceiver"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/btn_style"
+        android:backgroundTint="#D1BEE4"
+        android:text="@string/btn_openReceiver"
+        app:layout_constraintWidth_percent="0.7"
+        app:layout_constraintTop_toBottomOf="@id/btn_sendEmail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
