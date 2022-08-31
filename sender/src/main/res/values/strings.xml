@@ -4,7 +4,14 @@
     <string name="send_email_text">Send Email</string>
     <string name="to_google_maps_text">To Google Maps</string>
     <string name="chooser_title">Send email with</string>
+    <string name="chooser_title_open">Open with</string>
     <string name="email_recipient">android@otus.tu</string>
     <string name="email_subject">Homework Activities_02</string>
     <string name="email_text">Hello, Otus!</string>
+    <string name="title01">Славные парни</string>
+    <string name="title02">Интерстеллар</string>
+    <string name="year01">2016</string>
+    <string name="year02">2014</string>
+    <string name="description01">Что бывает, когда напарником брутального костолома становится субтильный лопух? Наемный охранник Джексон Хили и частный детектив Холланд Марч вынуждены работать в паре, чтобы распутать плевое дело о пропавшей девушке, которое оборачивается преступлением века. Смогут ли парни разгадать сложный ребус, если у каждого из них – свои, весьма индивидуальные методы.</string>
+    <string name="description02">Когда засуха, пыльные бури и вымирание растений приводят человечество к продовольственному кризису, коллектив исследователей и учёных отправляется сквозь червоточину (которая предположительно соединяет области пространства-времени через большое расстояние) в путешествие, чтобы превзойти прежние ограничения для космических путешествий человека и найти планету с подходящими для человечества условиями.</string>
 </resources>

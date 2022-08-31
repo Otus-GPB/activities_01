@@ -15,7 +15,7 @@ class SenderActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.buttonToGoogleMaps).setOnClickListener { chooseRestaurant() }
         findViewById<Button>(R.id.buttonSendEmail).setOnClickListener { sendEmail()}
-        findViewById<Button>(R.id.buttonOpenReceiver).setOnClickListener { }
+        findViewById<Button>(R.id.buttonOpenReceiver).setOnClickListener { openReceiver() }
     }
 
     private fun chooseRestaurant() {
@@ -28,6 +28,7 @@ class SenderActivity : AppCompatActivity() {
             Toast.makeText(this, "Google Maps not found.", Toast.LENGTH_SHORT).show()
         }
     }
+
     private fun sendEmail() {
         val emailRecipient = resources.getString(R.string.email_recipient)
         val emailSubject = resources.getString(R.string.email_subject)
@@ -45,5 +46,45 @@ class SenderActivity : AppCompatActivity() {
         } catch (e: ActivityNotFoundException) {
             Toast.makeText(this, "You can't send an email.", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun openReceiver() {
+        val payload = getPayload()
+        val chooserTitleOpen = resources.getString(R.string.chooser_title_open)
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            type = "text/plain"
+            addCategory(Intent.CATEGORY_DEFAULT)
+            putExtra("title", payload.title)
+            putExtra("year", payload.year)
+            putExtra("description", payload.description)
+        }
+        try {
+            startActivity(Intent.createChooser(sendIntent, chooserTitleOpen))
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(this, "You can't open receiver.", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    private fun getPayload(): Payload {
+        val accident = (1..100).random() % 2
+        val title =
+            if (accident == 0)
+                resources.getString(R.string.title01)
+            else
+                resources.getString(R.string.title02)
+        val year =
+            if (accident == 0)
+                resources.getString(R.string.year01)
+            else
+                resources.getString(R.string.year02)
+        val description =
+            if (accident == 0)
+                resources.getString(R.string.description01)
+            else
+                resources.getString(R.string.description02)
+
+        return Payload(title, year, description)
     }
 }
