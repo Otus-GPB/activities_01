@@ -8,6 +8,10 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 
+private const val EXTRA_TITLE = "title"
+private const val EXTRA_YEAR = "year"
+private const val EXTRA_DESCRIPTION = "description"
+
 class SenderActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,9 +59,9 @@ class SenderActivity : AppCompatActivity() {
             action = Intent.ACTION_SEND
             type = "text/plain"
             addCategory(Intent.CATEGORY_DEFAULT)
-            putExtra("title", payload.title)
-            putExtra("year", payload.year)
-            putExtra("description", payload.description)
+            putExtra(EXTRA_TITLE, payload.title)
+            putExtra(EXTRA_YEAR, payload.year)
+            putExtra(EXTRA_DESCRIPTION, payload.description)
         }
         try {
             startActivity(Intent.createChooser(sendIntent, chooserTitleOpen))
