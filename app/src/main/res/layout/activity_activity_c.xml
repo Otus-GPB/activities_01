@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ActivityC"
+    tools:context=".ActivityC">
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarC"
+        android:layout_width="match_parent"
+        android:layout_height="?android:actionBarSize"
+        android:background="@color/mytoolbar"
+        app:title="@string/toolbar_ActivityC"
+        app:titleTextColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <Button
+        android:id="@+id/GoActivityA"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="70dp"
+        android:text="@string/openActivityA"
+        android:textAllCaps="false"
+        android:textSize="25sp"
+        android:backgroundTint="@color/mybutton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4"
+        app:layout_constraintWidth_percent="0.7" />
+
+    <Button
+        android:id="@+id/GoActivityD"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="70dp"
+        android:text="@string/openActivityD"
+        android:textAllCaps="false"
+        android:textSize="25sp"
+        android:backgroundTint="@color/mybutton"
+        app:layout_constraintEnd_toEndOf="@id/GoActivityA"
+        app:layout_constraintStart_toStartOf="@id/GoActivityA"
+        app:layout_constraintTop_toBottomOf="@id/GoActivityA"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/CloseC"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="70dp"
+        android:text="@string/closeActivityC"
+        android:textAllCaps="false"
+        android:textSize="25sp"
+        android:backgroundTint="@color/black"
+        app:layout_constraintEnd_toEndOf="@id/GoActivityA"
+        app:layout_constraintStart_toStartOf="@id/GoActivityA"
+        app:layout_constraintTop_toBottomOf="@id/GoActivityD"
+        android:layout_marginTop="40dp"/>
+    <Button
+        android:id="@+id/CloseStack"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="70dp"
+        android:text="@string/closeActivityC"
+        android:textAllCaps="false"
+        android:textSize="25sp"
+        android:backgroundTint="@color/black"
+        app:layout_constraintEnd_toEndOf="@id/GoActivityA"
+        app:layout_constraintStart_toStartOf="@id/GoActivityA"
+        app:layout_constraintTop_toBottomOf="@id/CloseC"
+        android:layout_marginTop="10dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
