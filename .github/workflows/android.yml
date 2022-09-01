@@ -1,6 +1,8 @@
 name: Android CI
 
 on:
+  push:
+    branches: [ "antonkazakov-patch-1" ]
   pull_request:
     branches: [ "homework/**", "homeworks/**" ]
 
