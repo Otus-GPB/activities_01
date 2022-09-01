@@ -27,6 +27,7 @@ jobs:
     - name: detekt
       run: ./gradlew detekt
     - name: Upload a Build Artifact
+      if: ${{ failure() }}
       uses: actions/upload-artifact@v3.1.0
       with: 
         path: app/build/reports/detekt/detekt.html
