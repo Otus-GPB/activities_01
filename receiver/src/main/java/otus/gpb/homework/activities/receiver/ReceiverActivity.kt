@@ -25,8 +25,7 @@ class ReceiverActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.yearTextView).text = year
         findViewById<TextView>(R.id.descriptionTextView).text = description
         if (title.isNotEmpty()) {
-            val drawableResource =
-                when (title) {
+            val drawableResource = when (title) {
                     resources.getString(R.string.title01) -> R.drawable.niceguys
                     resources.getString(R.string.title02) -> R.drawable.interstellar
                     else -> throw IllegalArgumentException("Unknown title: $title")

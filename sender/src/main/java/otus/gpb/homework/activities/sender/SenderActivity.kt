@@ -18,7 +18,13 @@ class SenderActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sender)
 
         findViewById<Button>(R.id.buttonToGoogleMaps).setOnClickListener { chooseRestaurant() }
-        findViewById<Button>(R.id.buttonSendEmail).setOnClickListener { sendEmail()}
+        findViewById<Button>(R.id.buttonSendEmail).setOnClickListener {
+            sendEmail(
+                recipient = resources.getString(R.string.email_recipient),
+                subject = resources.getString(R.string.email_subject),
+                text = resources.getString(R.string.email_text)
+            )
+        }
         findViewById<Button>(R.id.buttonOpenReceiver).setOnClickListener { openReceiver() }
     }
 
@@ -33,17 +39,13 @@ class SenderActivity : AppCompatActivity() {
         }
     }
 
-    private fun sendEmail() {
-        val emailRecipient = resources.getString(R.string.email_recipient)
-        val emailSubject = resources.getString(R.string.email_subject)
-        val emailText = resources.getString(R.string.email_text)
+    private fun sendEmail(recipient: String, subject: String = "", text: String = "") {
         val chooserTitle = resources.getString(R.string.chooser_title)
-        val sendIntent = Intent().apply {
-            action = Intent.ACTION_SENDTO
-            data = Uri.parse("mailto:$emailRecipient")
-            putExtra(Intent.EXTRA_EMAIL, emailRecipient)
-            putExtra(Intent.EXTRA_SUBJECT, emailSubject)
-            putExtra(Intent.EXTRA_TEXT, emailText)
+        val sendIntent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:$recipient")
+            putExtra(Intent.EXTRA_EMAIL, recipient)
+            putExtra(Intent.EXTRA_SUBJECT, subject)
+            putExtra(Intent.EXTRA_TEXT, text)
         }
         try {
             startActivity(Intent.createChooser(sendIntent, chooserTitle))
