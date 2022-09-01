@@ -4,4 +4,18 @@
     <string name="btn_toGoogleMaps">To Google Maps</string>
     <string name="btn_sendEmail">Send Email</string>
     <string name="btn_openReceiver">Open Receiver</string>
+    <string name="forEmailTheme">Почитаем классику?</string>
+    <string name="forEmailBody">"""
+|Уж небо осенью дышало,
+|Уж реже солнышко блистало,
+|Короче становился день,
+|Лесов таинственная сень
+|С печальным шумом обнажалась,
+|Ложился на поля туман,
+|Гусей крикливых караван
+|Тянулся к югу: приближалась
+|Довольно скучная пора;
+|Стоял ноябрь уж у двора
+        """
+    </string>
 </resources>
