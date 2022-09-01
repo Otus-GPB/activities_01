@@ -11,7 +11,7 @@
         android:id="@+id/open_c_from_b"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/open_c_from_b"
+        android:text="@string/open_activityc"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

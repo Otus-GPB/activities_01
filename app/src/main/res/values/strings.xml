@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Activities</string>
-    <string name="open_b_from_a">Open ActivityB</string>
-    <string name="open_c_from_b">Open ActivityC</string>
+    <string name="open_activityb">Open ActivityB</string>
+    <string name="open_activityc">Open ActivityC</string>
     <string name="open_activitya">Open ActivityA</string>
     <string name="open_activityd">Open ActivityD</string>
     <string name="close_activityc">Close ActivityC</string>
