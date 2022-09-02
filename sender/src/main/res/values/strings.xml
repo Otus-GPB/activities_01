@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Sender</string>
+    <string name="button_text_to_google_maps">To Google Maps</string>
+    <string name="button_text_send_email">Send Email</string>
+    <string name="button_text_open_receiver">Open Receiver</string>
+    <string name="error_no_gmaps">Sorry. You should to install Google Maps first.</string>
+    <string name="error_no_email_clients">No email clients found. Please install</string>
+    <string name="error_no_receiver">Receiver not found. Please install it.</string>
 </resources>
