@@ -1,14 +1,50 @@
 package otus.gpb.homework.activities
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+
+private const val TAG = "ActivityB"
 
 class ActivityB : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_b)
 
-        findViewById<Button>(R.id.button_to_C).setOnClickListener{}
+        findViewById<Button>(R.id.button_to_C).setOnClickListener {
+            startActivity(Intent(this, ActivityC::class.java))
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        Log.d(TAG, "onNewIntent: $this")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart: $this")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume: $this")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause: $this")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop: $this")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy: $this")
     }
 }

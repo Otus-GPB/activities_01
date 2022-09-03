@@ -16,19 +16,24 @@
         <activity
             android:name=".ActivityD"
             android:label="ActivityD"
-            android:exported="false" />
+            android:exported="false"
+            android:taskAffinity="otus.gpb.homework.myStack"
+            />
         <activity
             android:name=".ActivityC"
             android:label="ActivityC"
-            android:exported="false"/>
+            android:exported="false"
+            android:taskAffinity="otus.gpb.homework.myStack"/>
         <activity
             android:name=".ActivityB"
             android:label="ActivityB"
-            android:exported="false" />
+            android:exported="false"
+            android:taskAffinity="otus.gpb.homework.myStack"/>
         <activity
             android:name=".ActivityA"
             android:label="ActivityA"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
