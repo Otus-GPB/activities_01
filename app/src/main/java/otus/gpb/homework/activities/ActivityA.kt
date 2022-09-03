@@ -16,8 +16,4 @@ class ActivityA : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-    }
 }
