@@ -11,6 +11,7 @@ class ActivityA : AppCompatActivity() {
         setContentView(R.layout.activity_activity_a)
         findViewById<Button>(R.id.GoActivityB).setOnClickListener({
             val intent = Intent(this, ActivityB::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         })
     }
