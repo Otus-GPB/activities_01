@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Receiver</string>
+    <string name="first_movie">Славные парни</string>
+    <string name="second_movie">Интерстеллар</string>
 </resources>

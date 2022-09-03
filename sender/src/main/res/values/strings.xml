@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Sender</string>
+
+    <string name="to_maps">To Google Maps</string>
+    <string name="send_email">Send Email</string>
+    <string name="open_receiver">Open Receiver</string>
+
+    <string name="error_map_app">Ошибка!\nGoogle Maps не установлен</string>
+    <string name="error_email_app">Ошибка!\nНе установлен ни один почтовый клиент</string>
+    <string name="error_receiver_app">Ошибка!\nНe установлен "Receiver"</string>
+
+    <string name="map_nearby">Рестораны</string>
+
+    <string name="email_address">android@otus.ru</string>
+    <string name="email_subject">Очень важное письмо!</string>
+    <string name="email_message">"Какое-то важное сообщение."</string>
+
+    <string name="movie_title">Интерстеллар</string>
+    <string name="movie_year">2014</string>
+    <string name="movie_description">Когда засуха, пыльные бури и вымирание растений приводят человечество к продовольственному кризису, коллектив исследователей и учёных отправляется сквозь червоточину (которая предположительно соединяет области пространства-времени через большое расстояние) в путешествие, чтобы превзойти прежние ограничения для космических путешествий человека и найти планету с подходящими для человечества условиями.</string>
 </resources>
