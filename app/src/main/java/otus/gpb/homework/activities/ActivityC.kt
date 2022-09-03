@@ -26,11 +26,10 @@ class ActivityC : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.button_close_C).setOnClickListener {
-            super.onBackPressed()
+            finish()
         }
 
         findViewById<Button>(R.id.button_close_Stack).setOnClickListener {
-            startActivity(Intent(this, ActivityA::class.java))
             finishAffinity()
         }
     }
