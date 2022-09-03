@@ -11,7 +11,6 @@ class ActivityC : AppCompatActivity() {
         setContentView(R.layout.activity_activity_c)
         findViewById<Button>(R.id.GoActivityA).setOnClickListener({
             val intent = Intent(this, ActivityA::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         })
         findViewById<Button>(R.id.GoActivityD).setOnClickListener({
@@ -20,7 +19,7 @@ class ActivityC : AppCompatActivity() {
             startActivity(intent)
         })
         findViewById<Button>(R.id.CloseC).setOnClickListener({
-            onBackPressed()
+            finish()
         })
         findViewById<Button>(R.id.CloseStack).setOnClickListener({
             finishAffinity()
