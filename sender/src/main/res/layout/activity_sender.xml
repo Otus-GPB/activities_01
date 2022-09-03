@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SenderActivity">
+
+    <Button
+        app:layout_constraintVertical_bias="0.4"
+        android:id="@+id/open_google_map_btn"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:text="@string/to_google_maps"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/send_email_btn"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:text="@string/send_email"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="@id/open_google_map_btn"
+        app:layout_constraintStart_toStartOf="@id/open_google_map_btn"
+        app:layout_constraintTop_toBottomOf="@id/open_google_map_btn" />
+
+    <Button
+        android:id="@+id/open_receiver_btn"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:text="@string/open_receiver"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="@id/open_google_map_btn"
+        app:layout_constraintStart_toStartOf="@id/open_google_map_btn"
+        app:layout_constraintTop_toBottomOf="@id/send_email_btn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
