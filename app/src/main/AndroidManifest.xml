@@ -17,20 +17,23 @@
             android:name=".ActivityD"
             android:exported="false"
             android:label="ActivityD"
-            android:launchMode="singleTask"/>
+            />
         <activity
             android:name=".ActivityC"
             android:exported="false"
-            android:label="ActivityC" />
+            android:label="ActivityC"
+             />
         <activity
             android:name=".ActivityB"
             android:exported="false"
-            android:label="ActivityB" />
+            android:label="ActivityB"
+             />
         <activity
             android:name=".ActivityA"
             android:exported="true"
             android:label="ActivityA"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTask"
+            android:taskAffinity=".activityATask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
