@@ -17,18 +17,17 @@ class ActivityC : AppCompatActivity() {
 
         val buttonOpenD = findViewById<Button>(R.id.act_c_button_d)
         buttonOpenD.setOnClickListener {
-            startActivity(Intent(this, ActivityD::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+            startActivity(Intent(this, ActivityD::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
         }
 
         val buttonCloseC = findViewById<Button>(R.id.act_c_button_close)
         buttonCloseC.setOnClickListener {
-            super.onBackPressed()
+            finish()
         }
 
         val buttonCloseStack = findViewById<Button>(R.id.act_c_button_close_stack)
         buttonCloseStack.setOnClickListener {
             finishAffinity()
-            startActivity(Intent(this, ActivityA::class.java))
         }
     }
 }
