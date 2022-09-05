@@ -29,7 +29,6 @@ class ActivityC : AppCompatActivity() {
 
         binding.buttonCloseStack.setOnClickListener {
             finishAffinity()
-            startActivity(Intent(this, ActivityA::class.java))
         }
     }
 }
