@@ -10,15 +10,25 @@ class ActivityC : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_c)
         findViewById<Button>(R.id.buttona).setOnClickListener {
-            startActivity(Intent(this, ActivityA :: class.java).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT))
+            startActivity(Intent(this, ActivityA :: class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
 
         }
         findViewById<Button>(R.id.buttond).setOnClickListener {
-            startActivity(Intent(this, ActivityD :: class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+            startActivity(Intent(this, ActivityD :: class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags((Intent.FLAG_ACTIVITY_NEW_TASK)))
         }
-        findViewById<Button>(R.id.button_closestack).setOnClickListener {  }
+        findViewById<Button>(R.id.button_closestack).setOnClickListener {
+            finishAffinity()
+
+            //startActivity(Intent(this, ActivityA :: class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+
+
+
+        }
         findViewById<Button>(R.id.button_closec).setOnClickListener {
-            startActivity(Intent(this, ActivityB :: class.java))
+
+
+            finish();
+
 
         }
 

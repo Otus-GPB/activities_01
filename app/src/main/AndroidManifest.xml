@@ -2,8 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="otus.gpb.homework.activities">
-
-    <application
+     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,9 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Activities"
         tools:targetApi="31">
-        <activity android:name=".ActivityD"></activity>
-        <activity android:name=".ActivityC" />
-        <activity android:name=".ActivityA">
+        <activity android:name=".ActivityD"
+            android:taskAffinity="otus.gpb.homework.activitiesB"></activity>
+        <activity android:name=".ActivityC"
+            android:taskAffinity="otus.gpb.homework.activitiesB"/>
+        <activity android:name=".ActivityA"
+            android:launchMode="singleTask"
+            android:exported="true">
 
             <intent-filter>
 
@@ -28,7 +31,9 @@
 
         </activity>
 
-        <activity android:name=".ActivityB" />
+        <activity android:name=".ActivityB"
+          android:taskAffinity="otus.gpb.homework.activitiesB"
+            />
     </application>
 
 </manifest>
