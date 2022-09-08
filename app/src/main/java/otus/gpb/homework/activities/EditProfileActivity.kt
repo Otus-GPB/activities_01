@@ -7,7 +7,9 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +19,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class EditProfileActivity : AppCompatActivity() {
     companion object {
+        private const val EDIT_ACTIVITY_RESULT_USER = "result_user"
         private const val EDIT_ACTIVITY_RESULT_IMAGE = "result_image"
     }
 
@@ -43,19 +46,41 @@ class EditProfileActivity : AppCompatActivity() {
             populateImage(it)
         }
     }
+    private val changeprofile_activity =
+        registerForActivityResult(FillFormActivity.FillFormContract()) {
+            if (it != null) {
+                userform = it
+                changedProfile()
+            } else Toast.makeText(
+                this,
+                "Что-то не получается.\nПопробуйте еще раз!",
+                Toast.LENGTH_LONG
+            ).show()
+        }
 
 
     private lateinit var imageView: ImageView
     private lateinit var imageUser: Uri
+    private lateinit var userform: FillFormActivity.UserFormData
+    private lateinit var changeprofile: Button
+    private lateinit var textFirstname: TextView
+    private lateinit var textSecondname: TextView
+    private lateinit var textage: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
-        imageView = findViewById(R.id.imageview_photo)
+
         imageUser = (savedInstanceState?.getParcelable(EDIT_ACTIVITY_RESULT_IMAGE) ?: Uri.parse(
             "android.resource://"
                     + getPackageName() + "/" + R.drawable.ic_baseline_add_photo_alternate_24
         )) as Uri
+
+        userform = savedInstanceState?.getParcelable(EDIT_ACTIVITY_RESULT_USER)
+            ?: FillFormActivity.UserFormData.USER_DEFAULT
+
+        imageView = findViewById(R.id.imageview_photo)
+
         if (imageUser != Uri.parse(
                 "android.resource://"
                         + getPackageName() + "/" + R.drawable.ic_baseline_add_photo_alternate_24
@@ -65,10 +90,21 @@ class EditProfileActivity : AppCompatActivity() {
             imageView.tag = imageUser
         }
 
-
+        textFirstname = findViewById(R.id.textview_name)
+        textSecondname = findViewById(R.id.textview_surname)
+        textage = findViewById(R.id.textview_age)
+        if (userform.realCreate == true) {
+            textFirstname.text = (userform.firstname.toString())
+            textSecondname.text = (userform.secondname.toString())
+            textage.text = (userform.age.toString())
+        }
 
         imageView.setOnClickListener {
             chooseAvatar()
+        }
+        changeprofile = findViewById(R.id.button4)
+        changeprofile.setOnClickListener {
+            open_changeprofile()
         }
 
         findViewById<Toolbar>(R.id.toolbar).apply {
@@ -84,12 +120,12 @@ class EditProfileActivity : AppCompatActivity() {
             }
         }
     }
-
     /**
-     * Save profile image
+     * Save profile image and information about user
      */
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        outState.putParcelable(EDIT_ACTIVITY_RESULT_USER, userform)
         if (imageUser != Uri.parse(
                 "android.resource://"
                         + getPackageName() + "/" + R.drawable.ic_baseline_add_photo_alternate_24
@@ -193,7 +229,6 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-
     /**
      * Используйте этот метод чтобы отобразить картинку полученную из медиатеки в ImageView
      */
@@ -204,7 +239,53 @@ class EditProfileActivity : AppCompatActivity() {
         imageUser = uri
     }
 
+    /**
+     * Launch Activity FillFormActivity and wait result
+     */
+    private fun open_changeprofile() {
+        changeprofile_activity.launch(userform)
+    }
+
+    /**
+     * Changed user profile by texts that we got from FillFormActivity
+     */
+    private fun changedProfile() {
+        findViewById<TextView>(R.id.textview_name).text = userform.firstname
+        findViewById<TextView>(R.id.textview_surname).text = userform.secondname
+        findViewById<TextView>(R.id.textview_age).text = userform.age.toString()
+    }
+
+    /**
+     * create intent for launch Telegram app and give it information about user (image and text)
+     */
     private fun openSenderApp() {
-        TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
+        if (imageUser == Uri.parse(
+                "android.resource://"
+                        + getPackageName() + "/" + R.drawable.ic_baseline_add_photo_alternate_24
+            )
+        ) {
+            Toast.makeText(this, "Oops, your profile image is empty...", Toast.LENGTH_LONG).show()
+
+        } else if (userform.realCreate == false) {
+            Toast.makeText(this, "Oops, your account is empty...", Toast.LENGTH_LONG).show()
+        } else {
+            val imgAdress = imageView.tag.toString()
+            val imageUri = Uri.parse(imgAdress)
+            val telegramIntent = Intent(Intent.ACTION_SEND)
+            telegramIntent.setPackage("org.telegram.messenger")
+            telegramIntent.setType("text/plain")
+            telegramIntent.setType("image/*")
+            telegramIntent.putExtra(Intent.EXTRA_STREAM, imageUri)
+            telegramIntent.putExtra(Intent.EXTRA_TEXT, userform.toString())
+            if (packageManager.resolveActivity(
+                    telegramIntent,
+                    PackageManager.MATCH_DEFAULT_ONLY
+                ) == null
+            ) {
+                Toast.makeText(this, "Oops, you don't have Telegram...", Toast.LENGTH_LONG).show()
+            } else {
+                startActivity(telegramIntent)
+            }
+        }
     }
 }
