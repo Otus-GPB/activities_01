@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/text_firstname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/add_firstname"
+        android:textAllCaps="true"
+        android:textSize="20sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <EditText
+        android:id="@+id/edit_firstname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="имя..."
+        android:imeOptions="actionNext"
+        android:inputType="textPersonName"
+        android:lines="1"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_firstname" />
+
+    <TextView
+        android:id="@+id/text_second"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/add_secondName"
+        android:textAllCaps="true"
+        android:textSize="20sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_firstname" />
+
+    <EditText
+        android:id="@+id/edit_secondname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="фамилия..."
+        android:imeOptions="actionNext"
+        android:inputType="textPersonName"
+        android:lines="1"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_second" />
+
+    <TextView
+        android:id="@+id/text_age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/add_age"
+        android:textAllCaps="true"
+        android:textSize="20sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_secondname" />
+
+    <EditText
+        android:id="@+id/edit_age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="возраст..."
+        android:imeOptions="actionGo"
+        android:inputType="number"
+        android:lines="1"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_age" />
+
+    <Button
+        android:id="@+id/save_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ok"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_age" />
+</androidx.constraintlayout.widget.ConstraintLayout>
