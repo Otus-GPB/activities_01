@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="title_dialogChooseAvatar">Выбор аватара</string>
+    <string-array name="message_dialogChooseAvatar">
+        <item>Сделать фото</item>
+        <item>Выбрать фото</item>
+    </string-array>
+    <string name="add_firstname">Ваше имя</string>
+    <string name="add_secondName">Ваша фамилия</string>
+    <string name="add_age">Ваш возраст</string>
 </resources>
