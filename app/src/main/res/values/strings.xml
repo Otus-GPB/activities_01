@@ -1,4 +1,19 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+
+    <string name="image_chooser_title">Выбор изображения</string>
+    <string-array name="image_chooser_item">
+        <item>Сделать фото</item>
+        <item>Выбрать фото</item>
+    </string-array>
+
+    <string name="rationale_dialog_title">Для чего нужна камера</string>
+    <string name="rationale_dialog_msg">Приложению необходимо получить разрешение на работу с камерой, чтобы сделать фото профиля</string>
+    <string name="rationale_dialog_ok">Дать доступ</string>
+    <string name="rationale_dialog_cancel">Отмена</string>
+
+    <string name="settings_dialog_title">Нет доступа к камере</string>
+    <string name="setting_dialog_msg">Чтобы предоставить доступ, перейдите в настройки.</string>
+    <string name="settings_dialog_ok">Настройки</string>
 </resources>

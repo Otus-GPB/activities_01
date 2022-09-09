@@ -1,15 +1,92 @@
 package otus.gpb.homework.activities
 
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
+
+    private fun takePhoto() {
+        imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.cat))
+    }
+
+    private val cameraPermissionRequest = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+        granted ->
+        if (granted) {
+            takePhoto()
+        } else if (!shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)) {
+            showAppSettingsDialog()
+        }
+    }
+
+    private fun showAppSettingsDialog() {
+        MaterialAlertDialogBuilder(this).apply {
+            setTitle(R.string.settings_dialog_title)
+            setMessage(R.string.setting_dialog_msg)
+            setPositiveButton(R.string.settings_dialog_ok) {
+                dialog, _ ->
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:$packageName"))
+                startActivity(intent)
+                dialog.dismiss()
+            }
+            show()
+        }
+    }
+
+    private fun showRationaleDialog(permission: String) {
+        MaterialAlertDialogBuilder(this).apply {
+            setTitle(R.string.rationale_dialog_title)
+            setMessage(R.string.rationale_dialog_msg)
+            setPositiveButton(R.string.rationale_dialog_ok) {
+                dialog, _ -> cameraPermissionRequest.launch(permission)
+                dialog.dismiss()
+            }
+            setNegativeButton(R.string.rationale_dialog_cancel) {
+                dialog, _ ->
+                dialog.dismiss()
+            }
+            show()
+        }
+    }
+
+    private fun getCameraPermission() {
+        val permission = android.Manifest.permission.CAMERA
+        if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED) {
+            if (!shouldShowRequestPermissionRationale(permission)) {
+                cameraPermissionRequest.launch(permission)
+            } else {
+                showRationaleDialog(permission)
+            }
+        } else {
+            takePhoto()
+        }
+    }
+
+    private fun takeProfileImageDialog() {
+        val items = resources.getStringArray(R.array.image_chooser_item)
+        MaterialAlertDialogBuilder(this).apply {
+            setTitle(R.string.image_chooser_title)
+            setItems(items) {
+                dialog, which -> when(which) {
+                    0 -> getCameraPermission()
+                    else -> false
+                }
+                dialog.dismiss()
+            }
+            show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +104,10 @@ class EditProfileActivity : AppCompatActivity() {
                     else -> false
                 }
             }
+        }
+
+        imageView.setOnClickListener {
+            takeProfileImageDialog()
         }
     }
 
