@@ -1,5 +1,6 @@
 package otus.gpb.homework.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -9,7 +10,7 @@ class ActivityA : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_a)
         findViewById<Button>(R.id.btnOpenB).setOnClickListener {
-
+            startActivity(Intent(this, ActivityB::class.java))
         }
     }
 }

@@ -8,7 +8,7 @@
     android:background="#4caf50">
 
     <TextView
-        android:id="@+id/textViewActivityA"
+        android:id="@+id/textViewActivityB"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -29,5 +29,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewActivityA" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewActivityB" />
 </androidx.constraintlayout.widget.ConstraintLayout>
