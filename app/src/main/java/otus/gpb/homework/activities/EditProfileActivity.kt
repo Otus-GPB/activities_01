@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -15,13 +16,21 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class EditProfileActivity : AppCompatActivity() {
 
+    companion object {
+        const val MIME_TYPE_IMAGE = "image/*"
+    }
+
     private lateinit var imageView: ImageView
 
     private fun takePhoto() {
         imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.cat))
     }
 
-    private val cameraPermissionRequest = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+    private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) {
+        it?.let { populateImage(it) }
+    }
+
+    private val cameraPermissionRequestLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
         granted ->
         if (granted) {
             takePhoto()
@@ -49,7 +58,7 @@ class EditProfileActivity : AppCompatActivity() {
             setTitle(R.string.rationale_dialog_title)
             setMessage(R.string.rationale_dialog_msg)
             setPositiveButton(R.string.rationale_dialog_ok) {
-                dialog, _ -> cameraPermissionRequest.launch(permission)
+                dialog, _ -> cameraPermissionRequestLauncher.launch(permission)
                 dialog.dismiss()
             }
             setNegativeButton(R.string.rationale_dialog_cancel) {
@@ -64,7 +73,7 @@ class EditProfileActivity : AppCompatActivity() {
         val permission = android.Manifest.permission.CAMERA
         if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED) {
             if (!shouldShowRequestPermissionRationale(permission)) {
-                cameraPermissionRequest.launch(permission)
+                cameraPermissionRequestLauncher.launch(permission)
             } else {
                 showRationaleDialog(permission)
             }
@@ -80,7 +89,7 @@ class EditProfileActivity : AppCompatActivity() {
             setItems(items) {
                 dialog, which -> when(which) {
                     0 -> getCameraPermission()
-                    else -> false
+                    else -> takePictureLauncher.launch(MIME_TYPE_IMAGE)
                 }
                 dialog.dismiss()
             }
