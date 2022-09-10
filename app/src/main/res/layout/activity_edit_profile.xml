@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:hint="Имя"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/imageview_photo"
         app:layout_constraintTop_toTopOf="@+id/imageview_photo" />
 
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:hint="Фамилия"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/textview_name"
         app:layout_constraintTop_toBottomOf="@+id/textview_name" />
 
@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:hint="Возраст"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/textview_surname"
         app:layout_constraintTop_toBottomOf="@+id/textview_surname" />
 
