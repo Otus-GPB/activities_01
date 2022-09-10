@@ -15,7 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Activities"
         tools:targetApi="30">
-
+        <activity
+            android:name=".FillFormActivity"
+            android:exported="false" />
         <activity
             android:name=".EditProfileActivity"
             android:exported="true">

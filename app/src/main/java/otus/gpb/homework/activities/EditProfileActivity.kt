@@ -1,13 +1,18 @@
 package otus.gpb.homework.activities
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -43,6 +48,26 @@ class EditProfileActivity : AppCompatActivity() {
             cameraLauncher.launch(Manifest.permission.CAMERA)
         }
 
+    private val fillFormLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()
+        ) { result: ActivityResult? ->
+            if (result?.resultCode == Activity.RESULT_OK) {
+                Log.d("EditProfile", "voj RESULT OK")
+                val intent: Intent? = result.data
+                if (intent == null)
+                    Log.d("EditProfile", "voj intent is null")
+                else
+                    Log.d("EditProfile", "voj intent is not null")
+                Log.d("EditProfile", "voj name is ${intent?.getStringExtra(FillFormActivity.EXTRA_RESULT_FIRST_NAME)}")
+                findViewById<TextView>(R.id.textview_name).text =
+                    intent?.getStringExtra(FillFormActivity.EXTRA_RESULT_FIRST_NAME)
+                findViewById<TextView>(R.id.textview_surname).text =
+                    intent?.getStringExtra(FillFormActivity.EXTRA_RESULT_SECOND_NAME)
+                findViewById<TextView>(R.id.textview_age).text =
+                    intent?.getStringExtra(FillFormActivity.EXTRA_RESULT_AGE)
+            }
+        }
+
     private val selectImageFromGalleryLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()
         ) { uri: Uri? ->
@@ -56,6 +81,9 @@ class EditProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_edit_profile)
         imageView = findViewById(R.id.imageview_photo)
         customizeImageView()
+        findViewById<Button>(R.id.button4).setOnClickListener() {
+            fillFormLauncher.launch(Intent(this, FillFormActivity::class.java))
+        }
 
         findViewById<Toolbar>(R.id.toolbar).apply {
             inflateMenu(R.menu.menu)
