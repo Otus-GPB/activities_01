@@ -36,10 +36,19 @@ class EditProfileActivity : AppCompatActivity() {
                     .show()
             }
         }
+
     private val settingsLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()
         ) {
             cameraLauncher.launch(Manifest.permission.CAMERA)
+        }
+
+    private val selectImageFromGalleryLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()
+        ) { uri: Uri? ->
+            uri?.let {
+                populateImage(uri)
+            }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,6 +79,9 @@ class EditProfileActivity : AppCompatActivity() {
                 .setItems(items) { _, idx ->
                     if (idx == 0) {
                         requestCameraPermissionWithRationale()
+                    }
+                    else {
+                        selectImageFromGalleryLauncher.launch("image/*")
                     }
                 }
                 .show()
