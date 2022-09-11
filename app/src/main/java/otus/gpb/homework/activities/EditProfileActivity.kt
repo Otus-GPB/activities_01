@@ -6,7 +6,9 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -17,13 +19,31 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class EditProfileActivity : AppCompatActivity() {
 
     companion object {
-        const val MIME_TYPE_IMAGE = "image/*"
+        const val TYPE_IMAGE = "image/*"
+        const val TYPE_PLAIN_TEXT = "text/plain"
+        const val SENDER_APP_PACKAGE = "org.telegram.messenger"
     }
 
     private lateinit var imageView: ImageView
+    private lateinit var userName: TextView
+    private lateinit var userSurname: TextView
+    private lateinit var userAge: TextView
+
+    private var imageViewUri: Uri? = null
 
     private fun takePhoto() {
         imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.cat))
+    }
+
+    private val fillFormLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        result ->
+        if (result.resultCode == RESULT_OK) {
+            result.data?.let {
+                userName.text = it.getStringExtra(FILL_FORM_USER_NAME_KEY)
+                userSurname.text = it.getStringExtra(FILL_FORM_USER_SURNAME_KEY)
+                userAge.text = it.getStringExtra(FILL_FORM_USER_AGE_KEY)
+            }
+        }
     }
 
     private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) {
@@ -89,7 +109,7 @@ class EditProfileActivity : AppCompatActivity() {
             setItems(items) {
                 dialog, which -> when(which) {
                     0 -> getCameraPermission()
-                    else -> takePictureLauncher.launch(MIME_TYPE_IMAGE)
+                    else -> takePictureLauncher.launch(TYPE_IMAGE)
                 }
                 dialog.dismiss()
             }
@@ -100,7 +120,12 @@ class EditProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
+
         imageView = findViewById(R.id.imageview_photo)
+
+        userName = findViewById<TextView>(R.id.textview_name)
+        userSurname = findViewById<TextView>(R.id.textview_surname)
+        userAge = findViewById<TextView>(R.id.textview_age)
 
         findViewById<Toolbar>(R.id.toolbar).apply {
             inflateMenu(R.menu.menu)
@@ -118,6 +143,13 @@ class EditProfileActivity : AppCompatActivity() {
         imageView.setOnClickListener {
             takeProfileImageDialog()
         }
+
+        findViewById<Button>(R.id.button4).apply {
+            setOnClickListener {
+                val intent = Intent(context, FillFormActivity::class.java)
+                fillFormLauncher.launch(intent)
+            }
+        }
     }
 
     /**
@@ -126,9 +158,24 @@ class EditProfileActivity : AppCompatActivity() {
     private fun populateImage(uri: Uri) {
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
         imageView.setImageBitmap(bitmap)
+        imageViewUri = uri
     }
 
     private fun openSenderApp() {
-        TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
+        imageView.drawable
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = TYPE_PLAIN_TEXT
+            setPackage(SENDER_APP_PACKAGE)
+            putExtra(Intent.EXTRA_TEXT, "${userName.text}\n${userSurname.text}\n${userAge.text}")
+            if (imageViewUri != null) {
+                putExtra(Intent.EXTRA_STREAM, imageViewUri)
+            }
+        }
+
+        if(intent.resolveActivity(packageManager) == null) {
+            Toast.makeText(this, "Приложение Telegram не установлено", Toast.LENGTH_SHORT).show()
+        } else {
+            startActivity(intent)
+        }
     }
 }

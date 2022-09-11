@@ -16,4 +16,8 @@
     <string name="settings_dialog_title">Нет доступа к камере</string>
     <string name="setting_dialog_msg">Чтобы предоставить доступ, перейдите в настройки.</string>
     <string name="settings_dialog_ok">Настройки</string>
+
+    <string name="user_name_hint">Имя</string>
+    <string name="user_surname_hint">Фамилия</string>
+    <string name="user_age_hint">Возраст</string>
 </resources>
