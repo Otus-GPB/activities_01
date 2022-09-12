@@ -46,7 +46,7 @@ class SenderActivity : AppCompatActivity() {
         googleIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         try {
             startActivity(googleIntent)
-        } catch (e: Exception) {
+        } catch (e: ActivityNotFoundException) {
             Toast
                 .makeText(this,
                 "Oops! Your phone has no GoogleMaps!" +
@@ -82,7 +82,7 @@ class SenderActivity : AppCompatActivity() {
         }
         try {
             startActivity(payloadIntent)
-        } catch (e: Exception) {
+        } catch (e: ActivityNotFoundException) {
             Toast
                 .makeText(
                 this,
