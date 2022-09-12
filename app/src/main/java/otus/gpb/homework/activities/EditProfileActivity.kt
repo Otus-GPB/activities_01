@@ -1,13 +1,18 @@
 package otus.gpb.homework.activities
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -20,17 +25,43 @@ private const val TAG = "EditProfileActivity"
 private const val PERMISSION_REQUEST_CAMERA = 0
 
 class EditProfileActivity : AppCompatActivity() {
+
     private lateinit var imageView: ImageView
+    private lateinit var name: TextView
+    private lateinit var surname: TextView
+    private lateinit var age: TextView
+    private var _uri: Uri? = null
+
+
+    private val editProfile = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+        object : ActivityResultCallback<ActivityResult?> {
+            override fun onActivityResult(result: ActivityResult?) {
+                result ?: return
+                if (result.resultCode == Activity.RESULT_OK) {
+                    Log.d(TAG, "result from fillFormActivity OK")
+                    name.text = result.data?.getStringExtra(NAME)
+                    surname.text = result.data?.getStringExtra(SURNAME)
+                    age.text = result.data?.getStringExtra(AGE)
+                }
+            }
+        }
+    )
 
     private val selectPhoto =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            _uri = uri
             uri?.let { imageView.setImageURI(uri) }
         }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
         imageView = findViewById(R.id.imageview_photo)
+        name = findViewById(R.id.textview_name)
+        surname = findViewById(R.id.textview_surname)
+        age = findViewById(R.id.textview_age)
 
         findViewById<Toolbar>(R.id.toolbar).apply {
             inflateMenu(R.menu.menu)
@@ -45,6 +76,15 @@ class EditProfileActivity : AppCompatActivity() {
             }
         }
         findViewById<ImageView>(R.id.imageview_photo).setOnClickListener { takePhoto() }
+        findViewById<Button>(R.id.button_edit).setOnClickListener {
+            editProfile.launch(
+                Intent(
+                    this,
+                    FillFormActivity::class.java
+                )
+            )
+        }
+
     }
 
     override fun onRequestPermissionsResult(
@@ -150,6 +190,19 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun openSenderApp() {
-        TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, "${name.text} ${surname.text} ${age.text}")
+            putExtra(Intent.EXTRA_STREAM, _uri)
+            type = "*/*"
+        }
+        startActivity(sendIntent)
+    }
+
+
+    companion object {
+        const val NAME = "name_from_fill_form"
+        const val SURNAME = "surname_from_fill_form"
+        const val AGE = "age_from_fill_form"
     }
 }
