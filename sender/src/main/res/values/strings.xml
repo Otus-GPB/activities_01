@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Sender</string>
+
+    <string name="email">android@otus.ru</string>
+    <string name="subject">Simple Subject</string>
+    <string name="text">Simple text from sender app!</string>
+
+    <string name="film_title">Славные парни</string>
+    <string name="film_year">2016</string>
+    <string name="film_description">Что бывает, когда напарником брутального костолома становится субтильный лопух? Наемный охранник Джексон Хили и частный детектив Холланд Марч вынуждены работать в паре, чтобы распутать плевое дело о пропавшей девушке, которое оборачивается преступлением века. Смогут ли парни разгадать сложный ребус, если у каждого из них – свои, весьма индивидуальные методы.</string>
 </resources>
