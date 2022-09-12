@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -20,6 +21,11 @@ private const val PERMISSION_REQUEST_CAMERA = 0
 
 class EditProfileActivity : AppCompatActivity() {
     private lateinit var imageView: ImageView
+
+    private val selectPhoto =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let { imageView.setImageURI(uri) }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,10 +72,11 @@ class EditProfileActivity : AppCompatActivity() {
             .setItems(items) { _, which ->
                 when (which) {
                     0 -> showCameraPreview()
-                    1 -> Log.d(TAG, "Выбрать фото")
+                    1 -> selectPhoto.launch("image/")
                 }
             }.show()
     }
+
 
     private fun showCameraPreview() {
         if (ContextCompat.checkSelfPermission(
