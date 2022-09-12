@@ -8,9 +8,9 @@ import android.widget.TextView
 
 class ReceiverActivity : AppCompatActivity() {
     companion object{
-        val KEY_PAYT="Title"
-        val KEY_PAYY="Year"
-        val KEY_PAYA="About"
+       private val KEY_PAYT="Title"
+       private val KEY_PAYY="Year"
+       private val KEY_PAYA="About"
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
