@@ -57,7 +57,7 @@ class EditProfileActivity : AppCompatActivity() {
         imageView.setOnClickListener {
             MaterialAlertDialogBuilder(this)
                 .setTitle("Choose your destiny")
-                .setItems(arrayOf("Сделать фото", "Выбрать фото")) { dialog, which ->
+                .setItems(arrayOf("Сделать фото", "Выбрать фото")) {_, which ->
                     if (which == 0) {
                         requestPermissionWithRationale()
                     } else {
