@@ -2,16 +2,17 @@ package otus.gpb.homework.activities
 
 import android.Manifest
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -31,14 +32,9 @@ class EditProfileActivity : AppCompatActivity() {
                 makePhoto()
             }
             else if (!ActivityCompat.shouldShowRequestPermissionRationale(
-                    this, Manifest.permission.CAMERA)) {
-                MaterialAlertDialogBuilder(this)
-                    .setTitle("В настройках перейдите на вкладку разрешения")
-                    .setMessage("И разрешите использовать камеру")
-                    .setPositiveButton("Открыть настройки") {_, _ ->
-                        openApplicationSettings()
-                    }
-                    .show()
+                    this, Manifest.permission.CAMERA)
+            ) {
+                showSettingsDialog()
             }
         }
 
@@ -52,13 +48,7 @@ class EditProfileActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()
         ) { result: ActivityResult? ->
             if (result?.resultCode == Activity.RESULT_OK) {
-                Log.d("EditProfile", "voj RESULT OK")
                 val intent: Intent? = result.data
-                if (intent == null)
-                    Log.d("EditProfile", "voj intent is null")
-                else
-                    Log.d("EditProfile", "voj intent is not null")
-                Log.d("EditProfile", "voj name is ${intent?.getStringExtra(FillFormActivity.EXTRA_RESULT_FIRST_NAME)}")
                 findViewById<TextView>(R.id.textview_name).text =
                     intent?.getStringExtra(FillFormActivity.EXTRA_RESULT_FIRST_NAME)
                 findViewById<TextView>(R.id.textview_surname).text =
@@ -73,6 +63,7 @@ class EditProfileActivity : AppCompatActivity() {
         ) { uri: Uri? ->
             uri?.let {
                 populateImage(uri)
+                imageView.tag = uri.toString()
             }
         }
 
@@ -80,8 +71,9 @@ class EditProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
         imageView = findViewById(R.id.imageview_photo)
+        imageView.tag = "NO URI"
         customizeImageView()
-        findViewById<Button>(R.id.button4).setOnClickListener() {
+        findViewById<Button>(R.id.button4).setOnClickListener {
             fillFormLauncher.launch(Intent(this, FillFormActivity::class.java))
         }
 
@@ -154,15 +146,43 @@ class EditProfileActivity : AppCompatActivity() {
             }
         }
     }
-    /**
-     * Используйте этот метод чтобы отобразить картинку полученную из медиатеки в ImageView
-     */
+
     private fun populateImage(uri: Uri) {
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
         imageView.setImageBitmap(bitmap)
     }
 
     private fun openSenderApp() {
-        TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
+        var text: String = findViewById<TextView>(R.id.textview_name).text.toString() + "\n"
+        text += findViewById<TextView>(R.id.textview_surname).text.toString() + "\n"
+        text += findViewById<TextView>(R.id.textview_age).text.toString() + "\n"
+        val uri: Uri? =
+            if (imageView.tag.toString() == "NO URI")
+                null
+            else
+                Uri.parse(imageView.tag.toString())
+        intent = Intent(Intent.ACTION_SEND).apply {
+            type = "*/*"
+            `package` = "org.telegram.messenger"
+            if (uri != null)
+                putExtra(Intent.EXTRA_STREAM, Uri.parse(imageView.tag.toString()))
+            putExtra(Intent.EXTRA_TEXT, text)
+        }
+        try {
+            startActivity(intent)
+        }
+        catch (e: ActivityNotFoundException) {
+            Toast.makeText(this, "Telegram not found: $e", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showSettingsDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle("В настройках перейдите на вкладку разрешения")
+            .setMessage("И разрешите использовать камеру")
+            .setPositiveButton("Открыть настройки") {_, _ ->
+                openApplicationSettings()
+            }
+            .show()
     }
 }

@@ -3,7 +3,6 @@ package otus.gpb.homework.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 
@@ -25,10 +24,9 @@ class FillFormActivity : AppCompatActivity() {
     }
 
     private fun returnResult() {
-        val firstName = findViewById<EditText>(R.id.editTextFirstName).text
-        val secondName = findViewById<EditText>(R.id.editTextSecondName).text
-        val age = findViewById<EditText>(R.id.editTextAge).text
-        Log.d("FILL FORM", "voj name:$firstName")
+        val firstName: String = findViewById<EditText>(R.id.editTextFirstName).text.toString()
+        val secondName: String = findViewById<EditText>(R.id.editTextSecondName).text.toString()
+        val age: String = findViewById<EditText>(R.id.editTextAge).text.toString()
         val result = Intent()
             .putExtra(EXTRA_RESULT_FIRST_NAME, firstName)
             .putExtra(EXTRA_RESULT_SECOND_NAME, secondName)

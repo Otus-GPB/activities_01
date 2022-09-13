@@ -20,7 +20,8 @@
         android:layout_height="wrap_content"
         android:autofillHints=""
         android:hint="@string/second_name"
-        android:inputType="text" />
+        android:inputType="text"
+        android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/editTextAge"
@@ -28,11 +29,12 @@
         android:layout_height="wrap_content"
         android:autofillHints=""
         android:hint="@string/age"
-        android:inputType="text" />
+        android:inputType="text"
+        android:minHeight="48dp" />
 
     <Button
         android:id="@+id/buttonApply"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:text="@string/apply" />
