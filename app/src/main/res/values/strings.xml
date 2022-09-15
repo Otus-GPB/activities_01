@@ -11,4 +11,9 @@
     <string name="open_settings">Переход в настройки</string>
     <string name="open_settings_for_permissions">Откройте настройки приложения для получения доступа к камере</string>
     <string name="good">Хорошо!</string>
+    <string name="second_activity">Заполнение данных</string>
+    <string name="enter_name_hint">Ваше имя</string>
+    <string name="enter_surname_hint">Ваша фамилия</string>
+    <string name="enter_age_hint">Ваш возраст</string>
+    <string name="save_result">Сохранить</string>
 </resources>

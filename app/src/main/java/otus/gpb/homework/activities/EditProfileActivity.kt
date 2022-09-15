@@ -8,7 +8,11 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -18,6 +22,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
+    private lateinit var editProfile: Button
+    private lateinit var person: Person
+    private lateinit var name: TextView
+    private lateinit var surName: TextView
+    private lateinit var age: TextView
+    private lateinit var uriForIntent: Uri
+
 
     private val launcherPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted: Boolean ->
@@ -32,6 +43,24 @@ class EditProfileActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.GetContent()) { imageUri: Uri? ->
             imageUri?.let {
                 populateImage(it)
+                uriForIntent = it
+            }
+        }
+
+    private val gettingTextLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == RESULT_OK) {
+                person = result.data?.getParcelableExtra(FillFormActivity.EXTRA_OPTIONS) ?: Person(
+                    "",
+                    "",
+                    ""
+                )
+                name.text = person.name
+                surName.text = person.surName
+                age.text = person.age
+
+            } else {
+                Toast.makeText(this, "Сведения не сохранялись", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -40,6 +69,10 @@ class EditProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
         imageView = findViewById(R.id.imageview_photo)
+        editProfile = findViewById(R.id.button4)
+        name = findViewById(R.id.textview_name)
+        surName = findViewById(R.id.textview_surname)
+        age = findViewById(R.id.textview_age)
 
         findViewById<Toolbar>(R.id.toolbar).apply {
             inflateMenu(R.menu.menu)
@@ -60,7 +93,7 @@ class EditProfileActivity : AppCompatActivity() {
 
             MaterialAlertDialogBuilder(this)
                 .setTitle(getString(R.string.choose_method))
-                .setItems(items) { dialog, which ->
+                .setItems(items) { _, which ->
                     when (which) {
                         0 -> checkPermissionWithRationale()
                         1 -> getPhotoLauncher.launch(MIME_TYPE)
@@ -68,6 +101,10 @@ class EditProfileActivity : AppCompatActivity() {
                 }
                 .show()
         }
+        editProfile.setOnClickListener {
+            openFillFormActivity()
+        }
+
     }
 
 
@@ -75,7 +112,6 @@ class EditProfileActivity : AppCompatActivity() {
     private fun getPicture() {
         findViewById<ImageView>(R.id.imageview_photo).setImageDrawable(getDrawable(R.drawable.cat))
     }
-
 
     private fun checkPermissionWithRationale() {
 
@@ -101,15 +137,14 @@ class EditProfileActivity : AppCompatActivity() {
 
     }
 
-
     private fun showRationalDialog() {
         MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.get_permission))
             .setMessage(getString(R.string.get_access_to_camera))
-            .setNegativeButton(getString(R.string.denie_access)) { dialog, which ->
+            .setNegativeButton(getString(R.string.denie_access)) { dialog, _ ->
                 dialog.cancel()
             }
-            .setPositiveButton(getString(R.string.yes)) { dialog, which ->
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 launcherPermission.launch(Manifest.permission.CAMERA)
 
             }
@@ -120,7 +155,7 @@ class EditProfileActivity : AppCompatActivity() {
         MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.open_settings))
             .setMessage(getString(R.string.open_settings_for_permissions))
-            .setPositiveButton(getString(R.string.good)) { dialog, which ->
+            .setPositiveButton(getString(R.string.good)) { _, _ ->
                 val intent = Intent(
                     Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                     Uri.parse("package:$packageName")
@@ -128,6 +163,13 @@ class EditProfileActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             .show()
+    }
+
+
+    private fun openFillFormActivity() {
+        val intent = Intent(this, FillFormActivity::class.java)
+        gettingTextLauncher.launch(intent)
+
     }
 
 
@@ -139,11 +181,23 @@ class EditProfileActivity : AppCompatActivity() {
         imageView.setImageBitmap(bitmap)
     }
 
+    @SuppressLint("QueryPermissionsNeeded")
     private fun openSenderApp() {
-        TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            type = MIME_TYPE_INTENT
+            setPackage("org.telegram.messenger")
+            putExtra(
+                Intent.EXTRA_TEXT,
+                "Имя: ${person.name} \nФамилия: ${person.surName} \nВозраст: ${person.age}"
+            )
+            putExtra(Intent.EXTRA_STREAM, uriForIntent)
+        }
+        startActivity(sendIntent)
     }
 
     companion object {
+        private const val MIME_TYPE_INTENT = "*/*"
         private const val MIME_TYPE = "image/*"
     }
 }
