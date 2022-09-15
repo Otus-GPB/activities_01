@@ -36,7 +36,7 @@ class ActivityC : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.close_c).setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+            finish()
         }
 
         findViewById<Button>(R.id.close_stack).setOnClickListener {
