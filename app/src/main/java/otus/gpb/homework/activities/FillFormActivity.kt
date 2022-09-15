@@ -17,7 +17,7 @@ class FillFormActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fill_form)
 
-        findViewById<Button>(R.id.buttonApply).setOnClickListener() {
+        findViewById<Button>(R.id.buttonApply).setOnClickListener {
             returnResult()
             finish()
         }

@@ -5,4 +5,14 @@
     <string name="second_name">"Фамилия"</string>
     <string name="age">"Возраст"</string>
     <string name="apply">"Применить"</string>
+    <string name="make_photo">Сделать Фото</string>
+    <string name="choose_photo">Выбрать Фото</string>
+    <string name="select_please">Пожалуйста, выберите</string>
+    <string name="permission_dialog_tittle">Пожалуйста, предоставьте доступ.</string>
+    <string name="permission_dialog_message">Это необходимо, чтобы сделать фото.</string>
+    <string name="permission_dialog_neg_button">Отмена</string>
+    <string name="permission_dialog_pos_button">Дать доступ</string>
+    <string name="settings_dialog_tittle">В настройках перейдите на вкладку разрешения</string>
+    <string name="settings_dialog_message">И разрешите использовать камеру</string>
+    <string name="settings_dialog_button">Открыть настройки</string>
 </resources>

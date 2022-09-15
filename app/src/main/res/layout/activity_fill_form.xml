@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:autofillHints=""
         android:hint="@string/age"
-        android:inputType="text"
+        android:inputType="number"
         android:minHeight="48dp" />
 
     <Button

@@ -49,12 +49,14 @@ class EditProfileActivity : AppCompatActivity() {
         ) { result: ActivityResult? ->
             if (result?.resultCode == Activity.RESULT_OK) {
                 val intent: Intent? = result.data
-                findViewById<TextView>(R.id.textview_name).text =
-                    intent?.getStringExtra(FillFormActivity.EXTRA_RESULT_FIRST_NAME)
-                findViewById<TextView>(R.id.textview_surname).text =
-                    intent?.getStringExtra(FillFormActivity.EXTRA_RESULT_SECOND_NAME)
-                findViewById<TextView>(R.id.textview_age).text =
-                    intent?.getStringExtra(FillFormActivity.EXTRA_RESULT_AGE)
+                val viewName = findViewById<TextView>(R.id.textview_name)
+                val viewSurname = findViewById<TextView>(R.id.textview_surname)
+                val viewAge = findViewById<TextView>(R.id.textview_age)
+                viewName.text =
+                    intent?.getStringExtra(FillFormActivity.EXTRA_RESULT_FIRST_NAME) ?: ""
+                viewSurname.text =
+                    intent?.getStringExtra(FillFormActivity.EXTRA_RESULT_SECOND_NAME) ?: ""
+                viewAge.text = intent?.getStringExtra(FillFormActivity.EXTRA_RESULT_AGE) ?: ""
             }
         }
 
@@ -71,7 +73,7 @@ class EditProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
         imageView = findViewById(R.id.imageview_photo)
-        imageView.tag = "NO URI"
+        imageView.tag = FLAG_NO_URI
         customizeImageView()
         findViewById<Button>(R.id.button4).setOnClickListener {
             fillFormLauncher.launch(Intent(this, FillFormActivity::class.java))
@@ -93,9 +95,9 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun customizeImageView() {
         imageView.setOnClickListener {
-            val items = arrayOf("Сделать Фото", "Выбрать Фото")
+            val items = arrayOf(getString(R.string.make_photo), getString(R.string.choose_photo))
             MaterialAlertDialogBuilder(this)
-                .setTitle("Пожалуйста, выберите")
+                .setTitle(getString(R.string.select_please))
                 .setItems(items) { _, idx ->
                     if (idx == 0) {
                         requestCameraPermissionWithRationale()
@@ -130,16 +132,7 @@ class EditProfileActivity : AppCompatActivity() {
             ActivityCompat.shouldShowRequestPermissionRationale(
                     this, Manifest.permission.CAMERA
             ) -> {
-                MaterialAlertDialogBuilder(this)
-                    .setTitle("Пожалуйста, предоставьте доступ.")
-                    .setMessage("Это необходимо, чтобы сделать фото.")
-                    .setNegativeButton("Отмена") { dialog, _ ->
-                        dialog.cancel()
-                    }
-                    .setPositiveButton("Дать доступ") { _, _ ->
-                        cameraLauncher.launch(Manifest.permission.CAMERA)
-                    }
-                    .show()
+                showPermissionDialog()
             }
             else -> {
                 cameraLauncher.launch(Manifest.permission.CAMERA)
@@ -157,7 +150,7 @@ class EditProfileActivity : AppCompatActivity() {
         text += findViewById<TextView>(R.id.textview_surname).text.toString() + "\n"
         text += findViewById<TextView>(R.id.textview_age).text.toString() + "\n"
         val uri: Uri? =
-            if (imageView.tag.toString() == "NO URI")
+            if (imageView.tag.toString() == FLAG_NO_URI)
                 null
             else
                 Uri.parse(imageView.tag.toString())
@@ -176,13 +169,34 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
+    private fun showPermissionDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.permission_dialog_tittle))
+            .setMessage(getString(R.string.permission_dialog_message))
+            .setNegativeButton(
+                getString(R.string.permission_dialog_neg_button)
+            ) { dialog, _ ->
+                dialog.cancel()
+            }
+            .setPositiveButton(
+                getString(R.string.permission_dialog_pos_button)
+            ) { _, _ ->
+                cameraLauncher.launch(Manifest.permission.CAMERA)
+            }
+            .show()
+    }
+
     private fun showSettingsDialog() {
         MaterialAlertDialogBuilder(this)
-            .setTitle("В настройках перейдите на вкладку разрешения")
-            .setMessage("И разрешите использовать камеру")
-            .setPositiveButton("Открыть настройки") {_, _ ->
+            .setTitle(getString(R.string.settings_dialog_tittle))
+            .setMessage(getString(R.string.settings_dialog_message))
+            .setPositiveButton(getString(R.string.settings_dialog_button)) { _, _ ->
                 openApplicationSettings()
             }
             .show()
+    }
+
+    companion object {
+        private const val FLAG_NO_URI: String = "NO URI"
     }
 }
