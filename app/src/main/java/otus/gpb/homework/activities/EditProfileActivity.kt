@@ -3,7 +3,6 @@ package otus.gpb.homework.activities
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -28,6 +27,14 @@ class EditProfileActivity : AppCompatActivity() {
                 openSettingsDialog()
             }
         }
+
+    private val getPhotoLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { imageUri: Uri? ->
+            imageUri?.let {
+                populateImage(it)
+            }
+        }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +63,7 @@ class EditProfileActivity : AppCompatActivity() {
                 .setItems(items) { dialog, which ->
                     when (which) {
                         0 -> checkPermissionWithRationale()
+                        1 -> getPhotoLauncher.launch(MIME_TYPE)
                     }
                 }
                 .show()
@@ -133,5 +141,9 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun openSenderApp() {
         TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
+    }
+
+    companion object {
+        private const val MIME_TYPE = "image/*"
     }
 }
