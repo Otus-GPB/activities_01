@@ -1,4 +1,25 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+
+    <string name="dialog_photo_rationale_title">Доступ к камере</string>
+    <string name="dialog_photo_rationale_message">Чтобы сделать фотографию необходимо предоставить доступ к камере</string>
+    <string name="dialog_photo_rationale_ok">Дать доступ</string>
+    <string name="dialog_photo_rationale_cancel">Отмена</string>
+
+    <string name="dialog_settings_title">Настройки</string>
+    <string name="dialog_settings_open">Открыть настройки</string>
+
+    <string name="dialog_photo_source_title">Фотография</string>
+    <string-array name="dialog_photo_items">
+        <item>Сделать фото</item>
+        <item>Выбрать фото</item>
+    </string-array>
+
+    <string name="name">Имя</string>
+    <string name="surname">Фамилия</string>
+    <string name="age">Возраст</string>
+    <string name="apply">Применить</string>
+    <string name="edit_profile">Редактировать профиль</string>
+    <string name="profile">Профиль</string>
 </resources>
