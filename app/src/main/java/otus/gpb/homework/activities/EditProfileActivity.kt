@@ -8,6 +8,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.ImageView
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -24,6 +26,13 @@ class EditProfileActivity : AppCompatActivity() {
                 setCatPhoto()
             } else if (!shouldShowRequestPermissionRationale(CAMERA)) {
                 showOpenSettingsDialog()
+            }
+        }
+
+    private val getContent =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) {
+                populateImage(uri)
             }
         }
 
@@ -72,7 +81,11 @@ class EditProfileActivity : AppCompatActivity() {
             ) { _, which ->
                 when (which) {
                     0 -> requestCameraPermission()
-                    1 -> {}
+                    1 -> getContent.launch(
+                        PickVisualMediaRequest(
+                            ActivityResultContracts.PickVisualMedia.ImageOnly
+                        )
+                    )
                 }
             }
             .show()
