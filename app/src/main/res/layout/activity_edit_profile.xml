@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:hint="Имя"
+        android:hint="@string/name"
         android:textSize="18dp"
         app:layout_constraintStart_toEndOf="@+id/imageview_photo"
         app:layout_constraintTop_toTopOf="@+id/imageview_photo" />
@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:hint="Фамилия"
+        android:hint="@string/surname"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="@+id/textview_name"
         app:layout_constraintTop_toBottomOf="@+id/textview_name" />
@@ -55,19 +55,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:hint="Возраст"
+        android:hint="@string/age"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="@+id/textview_surname"
         app:layout_constraintTop_toBottomOf="@+id/textview_surname" />
 
-    <Button
-        android:id="@+id/button4"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_edit"
         style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Редактировать профиль"
+        android:maxLines="2"
+        android:text="@string/edit_profile"
         app:layout_constraintStart_toStartOf="@+id/textview_age"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview_age" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
