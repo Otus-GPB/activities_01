@@ -16,6 +16,7 @@ class ActivityC : AppCompatActivity() {
         findViewById<Button>(R.id.GoActivityD).setOnClickListener({
             val intent = Intent(this, ActivityD::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         })
         findViewById<Button>(R.id.CloseC).setOnClickListener({
