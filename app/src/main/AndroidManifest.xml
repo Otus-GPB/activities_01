@@ -16,12 +16,10 @@
         <activity
             android:name=".ActivityD"
             android:exported="false"
-            android:launchMode="singleTask"
             android:taskAffinity="com.activity.grouptask"/>
         <activity
             android:name=".ActivityC"
             android:exported="false"
-            android:launchMode="singleTask"
             android:taskAffinity="com.activity.grouptask"/>
         <activity
             android:name=".ActivityB"
