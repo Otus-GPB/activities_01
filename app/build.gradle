@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id("io.gitlab.arturbosch.detekt")
 }
 
 android {
@@ -28,6 +29,22 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+}
+
+detekt {
+    source = files("src/main/java", "src/main/kotlin")
+    config = files("$rootDir/config/detekt/detekt.yml")
+}
+
+tasks.named("detekt").configure {
+    reports {
+        txt.required.set(true)
+        html.required.set(false)
+        md.required.set(false)
+        xml.required.set(false)
+        sarif.required.set(false)
+        html.outputLocation.set(file("build/reports/detekt/detekt.html"))
     }
 }
 
