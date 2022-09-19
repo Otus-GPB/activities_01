@@ -17,6 +17,7 @@ class ActivityA : AppCompatActivity() {
         findViewById<Button>(R.id.button_open_ActivityB).setOnClickListener {
             Log.d(TAG, "press button open Activity B")
             val intent = Intent(this, ActivityB::class.java)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
             startActivity(intent)
         }
     }
