@@ -29,10 +29,9 @@ class ReceiverActivity : AppCompatActivity() {
 
     }
 
-
     companion object {
-        const val EXTRA_TITLE = "title"
-        const val EXTRA_YEAR = "year"
-        const val EXTRA_DESCRIPTION = "description"
+        private const val EXTRA_TITLE = "title"
+        private const val EXTRA_YEAR = "year"
+        private const val EXTRA_DESCRIPTION = "description"
     }
 }

@@ -16,6 +16,7 @@ class SenderActivity : AppCompatActivity() {
         findViewById<Button>(R.id.open_google_map_btn).setOnClickListener {
             val mapUriIntent = Uri.parse("geo:0,0?q=рестораны")
             val intent = Intent(Intent.ACTION_VIEW, mapUriIntent)
+                .setPackage("com.google.android.apps.maps")
             startActivity(intent)
         }
 
@@ -30,18 +31,8 @@ class SenderActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.open_receiver_btn).setOnClickListener {
-            val aMovie = Movie(
-                "Славные парни",
-                "2016",
-                "Что бывает, когда напарником брутального костолома становится субтильный лопух? Наемный охранник Джексон Хили и частный детектив Холланд Марч вынуждены работать в паре, чтобы распутать плевое дело о пропавшей девушке, которое оборачивается преступлением века. Смогут ли парни разгадать сложный ребус, если у каждого из них – свои, весьма индивидуальные методы."
-            )
-            val bMovie = Movie(
-                "Интерстеллар",
-                "2014",
-                "Когда засуха, пыльные бури и вымирание растений приводят человечество к продовольственному кризису, коллектив исследователей и учёных отправляется сквозь червоточину (которая предположительно соединяет области пространства-времени через большое расстояние) в путешествие, чтобы превзойти прежние ограничения для космических путешествий человека и найти планету с подходящими для человечества условиями."
-            )
-            val extras = createExtra(aMovie, bMovie)
 
+            val extras = createSenderMovie()
             val intent = Intent(Intent.ACTION_SEND)
                 .addCategory(Intent.CATEGORY_DEFAULT)
                 .putExtra(EXTRA_TITLE, extras.title)
@@ -53,24 +44,29 @@ class SenderActivity : AppCompatActivity() {
 
     }
 
-    private fun createExtra(a: Movie, b: Movie) : Movie {
-        val random = Random.nextInt(1, 3)
-        val extras: Movie = if (random == 1) {
-            a
-        } else b
-        return extras
+    private fun createSenderMovie(): Payload {
+        val listOfMovies = listOf(
+            Payload(
+                "Славные парни",
+                "2016",
+                "Что бывает, когда напарником брутального костолома становится субтильный лопух? Наемный охранник Джексон Хили и частный детектив Холланд Марч вынуждены работать в паре, чтобы распутать плевое дело о пропавшей девушке, которое оборачивается преступлением века. Смогут ли парни разгадать сложный ребус, если у каждого из них – свои, весьма индивидуальные методы."
+            ),
+            Payload(
+                "Интерстеллар",
+                "2014",
+                "Когда засуха, пыльные бури и вымирание растений приводят человечество к продовольственному кризису, коллектив исследователей и учёных отправляется сквозь червоточину (которая предположительно соединяет области пространства-времени через большое расстояние) в путешествие, чтобы превзойти прежние ограничения для космических путешествий человека и найти планету с подходящими для человечества условиями."
+            )
+        )
+        val movieForReceiverActivity: Payload = when (Random.nextInt(listOfMovies.size)) {
+            0 -> listOfMovies[0]
+            else -> listOfMovies[1]
+        }
+        return movieForReceiverActivity
     }
 
     companion object {
-
-        const val EXTRA_TITLE = "title"
-        const val EXTRA_YEAR = "year"
-        const val EXTRA_DESCRIPTION = "description"
-
-        data class Movie(
-            val title: String,
-            val year: String,
-            val description: String
-        )
+        private const val EXTRA_TITLE = "title"
+        private const val EXTRA_YEAR = "year"
+        private const val EXTRA_DESCRIPTION = "description"
     }
 }
