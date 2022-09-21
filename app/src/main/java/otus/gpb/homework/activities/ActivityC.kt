@@ -11,11 +11,16 @@ class ActivityC : AppCompatActivity() {
         setContentView(R.layout.activity_c)
 
         findViewById<Button>(R.id.buttonC_A).setOnClickListener{
-            startActivity(Intent(this, ActivityA::class.java))
+            val intent = Intent(this, ActivityA::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
         }
 
         findViewById<Button>(R.id.buttonC_D).setOnClickListener{
-            startActivity(Intent(this, ActivityD::class.java))
+            val intent = Intent(this, ActivityD::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
         }
 
         findViewById<Button>(R.id.buttonC_C).setOnClickListener{
