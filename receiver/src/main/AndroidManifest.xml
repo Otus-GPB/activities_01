@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="otus.gpb.homework.activities.receiver">
+    package="ru.desh.activities2.receiver">
 
     <application
         android:allowBackup="true"
@@ -8,6 +8,29 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Activities" />
+        android:theme="@style/Theme.Activities">
+        <activity
+            android:name=".DummyActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ReceiverActivity"
+            android:exported="true">
+            <intent-filter>
+                <!-- После выбора приложения (пока не нажато "Запомнить выбор")
+                для обработки Intent, исчезает Parcelable содержимое
+                extras в Intent, а при использовании кастомного уникального action, содержимое всегда
+                 доходит до ReceiverActivity и система корркетно обрабатывает Intent
+                 (проверено на устройстве и эмуляторе)-->
+                <action android:name="ru.desh.activity2.sender.SEND_MOVIE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+    </application>
 
 </manifest>
