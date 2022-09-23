@@ -1,6 +1,7 @@
 package otus.gpb.homework.activities
 
 import android.Manifest
+import android.app.Activity
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -11,6 +12,7 @@ import androidx.appcompat.widget.Toolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.provider.MediaStore
 import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -18,6 +20,8 @@ import androidx.core.content.ContextCompat
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
+    private val pickImage = 100
+    private var imageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +64,7 @@ class EditProfileActivity : AppCompatActivity() {
             .show()
     }
 
-    private val launcher= registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+    private val cameraLauncher= registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             granted ->
         if (granted) {
             openCatPhoto()
@@ -69,12 +73,16 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
+    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) {
+        uri: Uri? -> uri?.let{ populateImage(it) }
+    }
+
     private fun showRationaleDialog() {
            MaterialAlertDialogBuilder(this)
             .setTitle(resources.getString(R.string.rationale_title))
             .setMessage(resources.getString(R.string.rationale_message))
             .setPositiveButton(resources.getString(R.string.open_access)) {dialog, _ ->
-                launcher.launch(Manifest.permission.CAMERA)
+                cameraLauncher.launch(Manifest.permission.CAMERA)
                 dialog.dismiss()
             }
             .setNegativeButton(resources.getString(R.string.cancel)) {dialog, _ ->
@@ -90,9 +98,14 @@ class EditProfileActivity : AppCompatActivity() {
             if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
                 showRationaleDialog()
             } else {
-                launcher.launch(Manifest.permission.CAMERA)
+                cameraLauncher.launch(Manifest.permission.CAMERA)
             }
         }
+    }
+
+
+    private fun getPhotoFromGallery() {
+        galleryLauncher.launch("image/*")
     }
 
     private fun selectActionDialog() {
@@ -107,7 +120,10 @@ class EditProfileActivity : AppCompatActivity() {
                         getPermission()
                         dialog.dismiss()
                     }
-                    1 -> dialog.dismiss()
+                    1 -> {
+                        getPhotoFromGallery()
+                        dialog.dismiss()
+                    }
                 }
             }
             .show()
