@@ -12,4 +12,8 @@
     <string name="settings">Настройки</string>
     <string name="settings_message">Для разрешения доступа приложения к камере просим Вас перейти в настройки и предоставить его</string>
     <string name="open_settings">Открыть настройки</string>
+    <string name="enter_surname">Введите фамилию</string>
+    <string name="enter_name">Введите имя</string>
+    <string name="enter_age">Введите возраст</string>
+    <string name="apply">Применить</string>
 </resources>

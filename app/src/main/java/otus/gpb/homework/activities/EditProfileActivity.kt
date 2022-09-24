@@ -14,14 +14,20 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.provider.MediaStore
 import android.provider.Settings
+import android.widget.Button
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+
+const val telegramManager = "org.telegram.messenger"
 
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
-    private val pickImage = 100
-    private var imageUri: Uri? = null
+    private lateinit var textName: TextView
+    private lateinit var textSurname: TextView
+    private lateinit var textAge: TextView
+    private lateinit var imageUri: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +39,7 @@ class EditProfileActivity : AppCompatActivity() {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.send_item -> {
-                        //    openSenderApp()
+                        openSenderApp()
                         true
                     }
                     else -> false
@@ -41,9 +47,19 @@ class EditProfileActivity : AppCompatActivity() {
             }
         }
 
+        textName = findViewById(R.id.textview_name)
+        textSurname = findViewById(R.id.textview_surname)
+        textAge = findViewById(R.id.textview_age)
+
         imageView.setOnClickListener() {
             selectActionDialog()
         }
+
+        findViewById<Button>(R.id.button4).setOnClickListener() {
+            activityLauncher.launch(Intent(this, FillFormActivity::class.java))
+        }
+
+
     }
 
     private fun openCatPhoto() {
@@ -62,6 +78,16 @@ class EditProfileActivity : AppCompatActivity() {
             }
 
             .show()
+    }
+
+    private val activityLauncher= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        result -> if (result.resultCode == RESULT_OK) {
+            result.data?.let {
+                textName.text = it.getStringExtra(USER_NAME)
+                textSurname.text = it.getStringExtra(USER_SURNAME)
+                textAge.text = it.getStringExtra(USER_AGE)
+            }
+        }
     }
 
     private val cameraLauncher= registerForActivityResult(ActivityResultContracts.RequestPermission()) {
@@ -137,9 +163,18 @@ class EditProfileActivity : AppCompatActivity() {
     private fun populateImage(uri: Uri) {
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
         imageView.setImageBitmap(bitmap)
+        imageUri = uri
     }
 
     private fun openSenderApp() {
-        TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
+       // TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
+        val intentSend = Intent(Intent.ACTION_SEND)
+            intentSend.type = "text/plain"
+            intentSend.putExtra(Intent.EXTRA_TEXT, "${textName.text}, ${textSurname.text}, ${textAge.text}")
+            intentSend.setPackage(telegramManager)
+            intentSend.putExtra(Intent.EXTRA_STREAM, imageUri)
+
+
+        startActivity(intentSend);
     }
 }
