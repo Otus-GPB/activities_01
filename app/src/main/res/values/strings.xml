@@ -1,4 +1,24 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="title_image_chooser">Выбор изображения</string>
+    <string-array name="array_image_chooser_item">
+        <item>Сделать фото</item>
+        <item>Выбрать фото</item>
+    </string-array>
+
+    <string name="button_ok">Дать доступ</string>
+    <string name="button_cancel">Отмена</string>
+    <string name="button_settings">Настройки</string>
+
+    <string name="title_rationale_dialog">Для чего нужна камера</string>
+    <string name="text_rationale_dialog">Приложению необходимо получить разрешение на работу с камерой, чтобы сделать фото профиля</string>
+
+    <string name="title_settings_dialog">Нет доступа к камере</string>
+    <string name="text_setting_dialog">Чтобы предоставить доступ, перейдите в настройки.</string>
+    <string name="hint_user_name">Имя</string>
+    <string name="hint_user_surname">Фамилия</string>
+    <string name="hint_user_age">Возраст</string>
+    <string name="button_apply">Применить</string>
+    <string name="toast_messeger_app_is_not_installed">Приложение Telegram не установлено</string>
 </resources>
