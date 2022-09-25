@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Activities</string>
+    <string name="button_activity_b">Open Activity B</string>
+    <string name="button_activity_a">Open Activity A</string>
+    <string name="button_activity_c">Open Activity C</string>
+    <string name="button_activity_d">Open Activity D</string>
+    <string name="button_close_activity_c">Close Activity C</string>
+    <string name="button_close_stack">Close stack</string>
+    <string name="title_activity_d">Activity D</string>
+    <string name="title_activity_c">Activity C</string>
+    <string name="title_activity_b">Activity B</string>
+    <string name="title_activity_a">Activity A</string>
 </resources>
