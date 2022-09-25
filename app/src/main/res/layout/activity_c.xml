@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="#2196f3"
+    tools:context=".ActivityA">
+
+    <Button
+        android:id="@+id/buttonActivityA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_activity_a" />
+
+    <Button
+        android:id="@+id/buttonActivityD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_activity_d" />
+
+    <Button
+        android:id="@+id/buttonCloseActivityC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_close_activity_c" />
+
+    <Button
+        android:id="@+id/buttonCloseStack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_close_stack" />
+
+</LinearLayout>
