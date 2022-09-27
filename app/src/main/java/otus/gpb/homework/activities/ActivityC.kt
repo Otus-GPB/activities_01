@@ -11,31 +11,28 @@ class ActivityC : AppCompatActivity() {
         setContentView(R.layout.activity_c)
         val buttonOpenA = findViewById<Button>(R.id.buttonOpenActivityA)
         buttonOpenA.setOnClickListener {
-            startActivity(Intent(this, ActivityA::class.java))
+            startActivity(Intent(this, ActivityA::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         }
 
         val buttonOpenD = findViewById<Button>(R.id.buttonOpenActivityD)
         buttonOpenD.setOnClickListener {
             val intent = Intent(this, ActivityD::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                    Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
 
         val buttonCloseC = findViewById<Button>(R.id.buttonCloseActivityC)
         buttonCloseC.setOnClickListener {
-           finish()
+            finish()
         }
 
         val buttonCloseStack = findViewById<Button>(R.id.buttonCloseStack)
         buttonCloseStack.setOnClickListener {
-            finishAffinity() // позволяет закрыть стек целиком
+            finishAffinity()
         }
     }
 
 
-
-
 }
-//В layout файл ActivityC
-// добавьте кнопки с текстом “Open ActivityA”,
-// “Open ActivityD”, “Close ActivityC”, “Close Stack”

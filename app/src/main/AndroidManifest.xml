@@ -15,23 +15,24 @@
         tools:targetApi="31">
         <activity
             android:name=".ActivityD"
-            android:label="ActivityD"
             android:exported="false"
-            android:launchMode="singleTask" />
+            android:label="ActivityD"
+            android:taskAffinity="otus.gpb.homework.activitiesB" />
         <activity
             android:name=".ActivityC"
+            android:exported="false"
             android:label="ActivityC"
-            android:exported="false" />
+            android:taskAffinity="otus.gpb.homework.activitiesB" />
         <activity
             android:name=".ActivityB"
-            android:label="ActivityB"
             android:exported="false"
-            android:launchMode="singleTask" />
+            android:label="ActivityB"
+            android:taskAffinity="otus.gpb.homework.activitiesB" />
         <activity
             android:name=".ActivityA"
-            android:label="ActivityA"
             android:exported="true"
-            android:launchMode="singleInstance">
+            android:label="ActivityA"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
