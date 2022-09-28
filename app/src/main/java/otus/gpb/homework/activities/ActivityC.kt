@@ -15,11 +15,11 @@ class ActivityC : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.act_c_button_d).setOnClickListener {
-            startActivity(Intent(this, ActivityD::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+            startActivity(Intent(this, ActivityD::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         }
 
         findViewById<Button>(R.id.act_c_button_close).setOnClickListener {
-            super.finish()
+            finish()
         }
 
         findViewById<Button>(R.id.act_c_button_close_stack).setOnClickListener {
