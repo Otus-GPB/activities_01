@@ -10,7 +10,8 @@ class ActivityA : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_a)
         findViewById<Button>(R.id.action_a_btn).setOnClickListener {
-            startActivity(Intent(this, ActivityB::class.java))
+            startActivity(Intent(this, ActivityB::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         }
     }
 }

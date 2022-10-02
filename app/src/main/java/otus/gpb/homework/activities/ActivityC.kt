@@ -11,11 +11,13 @@ class ActivityC : AppCompatActivity() {
         setContentView(R.layout.activity_c)
 
         findViewById<Button>(R.id.act_c_button_a).setOnClickListener {
-            startActivity(Intent(this, ActivityA::class.java))
+            startActivity(Intent(this, ActivityA::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         }
 
         findViewById<Button>(R.id.act_c_button_d).setOnClickListener {
-            startActivity(Intent(this, ActivityD::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            startActivity(Intent(this, ActivityD::class.java)
+                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
         }
 
         findViewById<Button>(R.id.act_c_button_close).setOnClickListener {
@@ -24,7 +26,6 @@ class ActivityC : AppCompatActivity() {
 
         findViewById<Button>(R.id.act_c_button_close_stack).setOnClickListener {
             finishAffinity()
-            startActivity(Intent(this,ActivityA::class.java))
         }
     }
 }
