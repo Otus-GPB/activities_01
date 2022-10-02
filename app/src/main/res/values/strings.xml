@@ -1,4 +1,22 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+
+    <string name="alert_dialog_title">Выберите действие</string>\
+    <string name="action_make_photo">Сделать фото</string>
+    <string name="action_choose_photo">Выбрать фото</string>
+
+    <string name="rationale_title">Запрос разрешения</string>
+    <string name="rationale_message">Для того чтобы получить доступ к камере и сделать фото,
+        приложению необходимо разрешение</string>
+    <string name="rationale_positive">Дать доступ</string>
+    <string name="rationale_negative">Отмена</string>
+    <string name="settings_alert_title">Требуется разрешение</string>
+    <string name="open_settings">Открыть настройки</string>
+    <string name="settings_result_negative">Невозможно сделать фото без доступа к камере!</string>
+    <string name="fill_form_header">Заполнить профиль:</string>
+    <string name="fill_form_hint_name">Имя</string>
+    <string name="fill_form_hint_surname">Фамилия</string>
+    <string name="fill_form_hint_age">Возраст</string>
+    <string name="fill_form_apply">Применить</string>
 </resources>
