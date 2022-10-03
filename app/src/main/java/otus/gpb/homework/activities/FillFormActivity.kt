@@ -39,9 +39,9 @@ class FillFormActivity : AppCompatActivity() {
     }
 
     private fun updateUI() {
-        textFirstname.setHint("...редактировать: ${userObject.firstname.toString()}")
-        textSecondname.setHint("...редактировать: ${userObject.secondname.toString()}")
-        textAge.setHint("...редактировать: ${userObject.age.toString()}")
+        textFirstname.setHint("...редактировать: ${userObject.firstname}")
+        textSecondname.setHint("...редактировать: ${userObject.secondname}")
+        textAge.setHint("...редактировать: ${userObject.age}")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -83,14 +83,9 @@ class FillFormActivity : AppCompatActivity() {
 
         companion object {
             val USER_DEFAULT = UserFormData("Default", "Default", 0, false)
-
         }
     }
-
-
     class FillFormContract : ActivityResultContract<UserFormData, UserFormData?>() {
-
-
         override fun createIntent(context: Context, input: UserFormData): Intent {
             val intent = Intent(context, FillFormActivity::class.java)
             intent.putExtra(INPUT_VALUE, input)
@@ -101,9 +96,7 @@ class FillFormActivity : AppCompatActivity() {
             if (intent == null) return null
             val message = intent?.getParcelableExtra<UserFormData>(OUTPUT_VALUE) ?: null
             return message
-
         }
-
     }
 
     companion object {
@@ -111,5 +104,4 @@ class FillFormActivity : AppCompatActivity() {
         private const val OUTPUT_VALUE = "output_value"
         private const val KEY_OUTPUT_VALUE = "key_output_value"
     }
-
 }
