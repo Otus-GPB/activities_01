@@ -51,7 +51,7 @@ class EditProfileActivity : AppCompatActivity() {
                 changedProfile()
             } else Toast.makeText(
                 this,
-                "Что-то не получается.\nПопробуйте еще раз!",
+                getString(R.string.toastAnyProblems),
                 Toast.LENGTH_LONG
             ).show()
         }
@@ -185,14 +185,14 @@ class EditProfileActivity : AppCompatActivity() {
      */
     private fun showdialogForPermission() {
         MaterialAlertDialogBuilder(this@EditProfileActivity)
-            .setTitle("Почему нам нужна камера:")
+            .setTitle(getString(R.string.titleAskPermissionDialog))
             .setMessage(
-                "Без камеры мы не можем сделать\n" + "классные фоточки и запостить их на аватар")
-            .setPositiveButton("Ok!") { d, _ ->
+                getString(R.string.messageAskPermissionDialog))
+            .setPositiveButton(getString(R.string.positiveBntPermissionDialog)) { d, _ ->
                 cameraPermission.launch(Manifest.permission.CAMERA)
                 d.dismiss()
             }
-            .setNegativeButton("Отмена") { d, _ ->
+            .setNegativeButton(getString(R.string.negativeBtnPermissionDialog)) { d, _ ->
                 d.dismiss()
             }
             .show()
@@ -207,12 +207,12 @@ class EditProfileActivity : AppCompatActivity() {
         intent1.data = Uri.fromParts("package", packageName, null)
         intent1.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
         if (packageManager.resolveActivity(intent1, PackageManager.MATCH_DEFAULT_ONLY) == null) {
-            Toast.makeText(this, "Доступ запрещен навсегда", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.toastPermText), Toast.LENGTH_LONG).show()
         } else {
             MaterialAlertDialogBuilder(this@EditProfileActivity)
-                .setTitle("Доступ к камере запрещен!")
-                .setMessage("Открыть доступ можно в настройках приложения")
-                .setPositiveButton("Перейти в настройки...") { d, _ ->
+                .setTitle(getString(R.string.notPermDialogTitle))
+                .setMessage(getString(R.string.notPermDialogMessage))
+                .setPositiveButton(getString(R.string.notPermDialogPositiveBtn)) { d, _ ->
                     startActivity(intent1)
                     d.dismiss()
                 }
@@ -246,9 +246,9 @@ class EditProfileActivity : AppCompatActivity() {
                 "android.resource://" + getPackageName() + "/" + R.drawable.ic_baseline_add_photo_alternate_24
             )
         ) {
-            Toast.makeText(this, "Oops, your profile image is empty...", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.toastEmptyImage), Toast.LENGTH_LONG).show()
         } else if (userform.realCreate == false) {
-            Toast.makeText(this, "Oops, your account is empty...", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.toastEmptyAccount), Toast.LENGTH_LONG).show()
         } else {
             val imgAdress = imageView.tag.toString()
             val imageUri = Uri.parse(imgAdress)
@@ -263,7 +263,7 @@ class EditProfileActivity : AppCompatActivity() {
                     PackageManager.MATCH_DEFAULT_ONLY
                 ) == null
             ) {
-                Toast.makeText(this, "Oops, you don't have Telegram...", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.toastNotTelegram), Toast.LENGTH_LONG).show()
             } else {
                 startActivity(telegramIntent)
             }
