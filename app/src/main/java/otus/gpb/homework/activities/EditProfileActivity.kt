@@ -24,9 +24,9 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private var cameraPermission =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {isGranted ->
             when {
-                true -> setAvatarbyCat()
+                isGranted -> setAvatarbyCat()
                 else ->
                     when {
                         !ActivityCompat.shouldShowRequestPermissionRationale(
@@ -149,7 +149,7 @@ class EditProfileActivity : AppCompatActivity() {
         val choose: Array<String> = resources.getStringArray(R.array.message_dialogChooseAvatar)
         MaterialAlertDialogBuilder(this).apply {
             setTitle(resources.getString(R.string.title_dialogChooseAvatar))
-            setItems(choose, { dialog, which ->
+            setItems(choose, { _, which ->
                 when (which) {
                     0 -> clickOnCamera()
                     1 -> galleryGetphoto.launch("image/*")
