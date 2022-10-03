@@ -71,7 +71,8 @@ class EditProfileActivity : AppCompatActivity() {
             savedInstanceState?.getParcelable(EDIT_ACTIVITY_RESULT_IMAGE)
                 ?: Uri.parse(
                     "android.resource://" + getPackageName() + "/" + R.drawable.ic_baseline_add_photo_alternate_24
-                )) as Uri
+                )
+            ) as Uri
 
         userform = savedInstanceState?.getParcelable(EDIT_ACTIVITY_RESULT_USER)
             ?: FillFormActivity.UserFormData.USER_DEFAULT
@@ -79,7 +80,8 @@ class EditProfileActivity : AppCompatActivity() {
         imageView = findViewById(R.id.imageview_photo)
 
         if (imageUser != Uri.parse(
-                "android.resource://" + getPackageName() + "/" + R.drawable.ic_baseline_add_photo_alternate_24)
+                "android.resource://" + getPackageName() + "/" + R.drawable.ic_baseline_add_photo_alternate_24
+            )
         ) {
             imageView.setImageURI(imageUser)
             imageView.tag = imageUser
@@ -122,7 +124,8 @@ class EditProfileActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         outState.putParcelable(EDIT_ACTIVITY_RESULT_USER, userform)
         if (imageUser != Uri.parse(
-                "android.resource://" + getPackageName() + "/" + R.drawable.ic_baseline_add_photo_alternate_24)
+                "android.resource://" + getPackageName() + "/" + R.drawable.ic_baseline_add_photo_alternate_24
+            )
         )
             outState.putParcelable(EDIT_ACTIVITY_RESULT_IMAGE, imageUser)
     }
@@ -226,8 +229,6 @@ class EditProfileActivity : AppCompatActivity() {
         imageView.tag = uri
         imageUser = uri
     }
-
-
     /**
      * Changed user profile by texts that we got from FillFormActivity
      */
