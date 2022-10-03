@@ -9,4 +9,20 @@
     <string name="add_firstname">Ваше имя</string>
     <string name="add_secondName">Ваша фамилия</string>
     <string name="add_age">Ваш возраст</string>
+    <string name="askUserAge">ваш возраст?</string>
+    <string name="askUserSecondName">ваша фамилия?</string>
+    <string name="askUserFirstName">ваше имя?</string>
+    <string name="helpText">"...редактировать:"</string>
+    <string name="titleAskPermissionDialog">Почему нам нужна камера:</string>
+    <string name="messageAskPermissionDialog">Без камеры мы не можем сделать\nклассные фоточки и запостить их на аватар</string>
+    <string name="positiveBntPermissionDialog">Ok!</string>
+    <string name="negativeBtnPermissionDialog">Отмена</string>
+    <string name="toastPermText">Доступ запрещен навсегда</string>
+    <string name="notPermDialogTitle">Доступ к камере запрещен!</string>
+    <string name="notPermDialogMessage">Открыть доступ можно в настройках приложения</string>
+    <string name="notPermDialogPositiveBtn">Перейти в настройки...</string>
+    <string name="toastEmptyImage">Oops, your profile image is empty...</string>
+    <string name="toastEmptyAccount">Oops, your account is empty...</string>
+    <string name="toastNotTelegram">Oops, you don\'t have Telegram...</string>
+    <string name="toastAnyProblems">Что-то не получается.\nПопробуйте еще раз!</string>
 </resources>
