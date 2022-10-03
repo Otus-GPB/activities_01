@@ -1,4 +1,5 @@
 package otus.gpb.homework.activities
+
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -39,9 +40,9 @@ class FillFormActivity : AppCompatActivity() {
     }
 
     private fun updateUI() {
-        textFirstname.setHint("...редактировать: ${userObject.firstname}")
-        textSecondname.setHint("...редактировать: ${userObject.secondname}")
-        textAge.setHint("...редактировать: ${userObject.age}")
+        textFirstname.setHint("${getString(R.string.helpText)} ${userObject.firstname}")
+        textSecondname.setHint("${getString(R.string.helpText)} ${userObject.secondname}")
+        textAge.setHint("${getString(R.string.helpText)} ${userObject.age}")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -51,24 +52,27 @@ class FillFormActivity : AppCompatActivity() {
 
     private fun saveUser() {
         if (textFirstname.text.trim().isEmpty())
-            textFirstname.error = "ваше имя?"
+            textFirstname.error = getString(R.string.askUserFirstName)
         else if (textSecondname.text.trim().isEmpty())
-            textSecondname.error = "ваша фамилия?"
+            textSecondname.error = getString(R.string.askUserSecondName)
         else if (textAge.text.trim().isEmpty())
-            textAge.error = "ваш возраст?"
+            textAge.error = getString(R.string.askUserAge)
         else {
-            userObject = UserFormData(
-                textFirstname.text.toString().trim(),
-                textSecondname.text.toString().trim(),
-                textAge.text.toString().trim().toInt()
-            )
-            userFormresult = Intent()
-            userFormresult.putExtra(OUTPUT_VALUE, userObject)
-            setResult(RESULT_OK, userFormresult)
-            finish()
+            addUserObjForSave()
         }
     }
 
+    private fun addUserObjForSave() {
+        userObject = UserFormData(
+            textFirstname.text.toString().trim(),
+            textSecondname.text.toString().trim(),
+            textAge.text.toString().trim().toInt()
+        )
+        userFormresult = Intent()
+        userFormresult.putExtra(OUTPUT_VALUE, userObject)
+        setResult(RESULT_OK, userFormresult)
+        finish()
+    }
     @Parcelize
     data class UserFormData(
         val firstname: String,
@@ -85,6 +89,7 @@ class FillFormActivity : AppCompatActivity() {
             val USER_DEFAULT = UserFormData("Default", "Default", 0, false)
         }
     }
+
     class FillFormContract : ActivityResultContract<UserFormData, UserFormData?>() {
         override fun createIntent(context: Context, input: UserFormData): Intent {
             val intent = Intent(context, FillFormActivity::class.java)
