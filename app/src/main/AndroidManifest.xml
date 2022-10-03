@@ -24,7 +24,8 @@
             android:exported="false" />
         <activity
             android:name=".ActivityA"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,5 +33,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>
