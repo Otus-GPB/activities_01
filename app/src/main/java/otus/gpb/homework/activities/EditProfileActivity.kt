@@ -23,10 +23,10 @@ class EditProfileActivity : AppCompatActivity() {
         private const val EDIT_ACTIVITY_RESULT_IMAGE = "result_image"
     }
 
-    private var camera_permission =
+    private var cameraPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             when {
-                it -> setAvatarbyCat()
+                true -> setAvatarbyCat()
                 else ->
                     when {
                         !ActivityCompat.shouldShowRequestPermissionRationale(
@@ -39,14 +39,12 @@ class EditProfileActivity : AppCompatActivity() {
                     }
             }
         }
-    private val gallery_getphoto = registerForActivityResult(
+    private val galleryGetphoto = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
-        uri?.let { it ->
-            populateImage(it)
-        }
+        uri?.let { populateImage(it) }
     }
-    private val changeprofile_activity =
+    private val changeprofileActivity =
         registerForActivityResult(FillFormActivity.FillFormContract()) {
             if (it != null) {
                 userform = it
@@ -57,8 +55,6 @@ class EditProfileActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG
             ).show()
         }
-
-
     private lateinit var imageView: ImageView
     private lateinit var imageUser: Uri
     private lateinit var userform: FillFormActivity.UserFormData
@@ -71,10 +67,11 @@ class EditProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
 
-        imageUser = (savedInstanceState?.getParcelable(EDIT_ACTIVITY_RESULT_IMAGE) ?: Uri.parse(
-            "android.resource://"
-                    + getPackageName() + "/" + R.drawable.ic_baseline_add_photo_alternate_24
-        )) as Uri
+        imageUser = (
+            savedInstanceState?.getParcelable(EDIT_ACTIVITY_RESULT_IMAGE)
+                ?: Uri.parse(
+                    "android.resource://" + getPackageName() + "/" + R.drawable.ic_baseline_add_photo_alternate_24
+                )) as Uri
 
         userform = savedInstanceState?.getParcelable(EDIT_ACTIVITY_RESULT_USER)
             ?: FillFormActivity.UserFormData.USER_DEFAULT
@@ -82,9 +79,7 @@ class EditProfileActivity : AppCompatActivity() {
         imageView = findViewById(R.id.imageview_photo)
 
         if (imageUser != Uri.parse(
-                "android.resource://"
-                        + getPackageName() + "/" + R.drawable.ic_baseline_add_photo_alternate_24
-            )
+                "android.resource://" + getPackageName() + "/" + R.drawable.ic_baseline_add_photo_alternate_24)
         ) {
             imageView.setImageURI(imageUser)
             imageView.tag = imageUser
@@ -104,7 +99,7 @@ class EditProfileActivity : AppCompatActivity() {
         }
         changeprofile = findViewById(R.id.button4)
         changeprofile.setOnClickListener {
-            open_changeprofile()
+            changeprofileActivity.launch(userform)
         }
 
         findViewById<Toolbar>(R.id.toolbar).apply {
@@ -127,9 +122,7 @@ class EditProfileActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         outState.putParcelable(EDIT_ACTIVITY_RESULT_USER, userform)
         if (imageUser != Uri.parse(
-                "android.resource://"
-                        + getPackageName() + "/" + R.drawable.ic_baseline_add_photo_alternate_24
-            )
+                "android.resource://" + getPackageName() + "/" + R.drawable.ic_baseline_add_photo_alternate_24)
         )
             outState.putParcelable(EDIT_ACTIVITY_RESULT_IMAGE, imageUser)
     }
@@ -140,12 +133,10 @@ class EditProfileActivity : AppCompatActivity() {
     private fun setAvatarbyCat() {
         imageView.setImageResource(R.drawable.cat)
         val imageUri = Uri.parse(
-            "android.resource://"
-                    + getPackageName() + "/" + R.drawable.cat
-        );
+            "android.resource://" + getPackageName() + "/" + R.drawable.cat
+        )
         imageView.tag = imageUri
         imageUser = imageUri
-
     }
 
     /**
@@ -158,7 +149,7 @@ class EditProfileActivity : AppCompatActivity() {
             setItems(choose, { dialog, which ->
                 when (which) {
                     0 -> clickOnCamera()
-                    1 -> gallery_getphoto.launch("image/*")
+                    1 -> galleryGetphoto.launch("image/*")
                 }
             })
             show()
@@ -179,7 +170,7 @@ class EditProfileActivity : AppCompatActivity() {
             !ActivityCompat.shouldShowRequestPermissionRationale(
                 this@EditProfileActivity,
                 Manifest.permission.CAMERA
-            ) -> camera_permission.launch(Manifest.permission.CAMERA)
+            ) -> cameraPermission.launch(Manifest.permission.CAMERA)
 
             else -> showdialogForPermission()
         }
@@ -193,16 +184,13 @@ class EditProfileActivity : AppCompatActivity() {
         MaterialAlertDialogBuilder(this@EditProfileActivity)
             .setTitle("Почему нам нужна камера:")
             .setMessage(
-                "Без камеры мы не можем сделать\n" +
-                        "классные фоточки и запостить их на аватар"
-            )
+                "Без камеры мы не можем сделать\n" + "классные фоточки и запостить их на аватар")
             .setPositiveButton("Ok!") { d, _ ->
-                camera_permission.launch(Manifest.permission.CAMERA)
+                cameraPermission.launch(Manifest.permission.CAMERA)
                 d.dismiss()
             }
             .setNegativeButton("Отмена") { d, _ ->
                 d.dismiss()
-
             }
             .show()
     }
@@ -239,12 +227,6 @@ class EditProfileActivity : AppCompatActivity() {
         imageUser = uri
     }
 
-    /**
-     * Launch Activity FillFormActivity and wait result
-     */
-    private fun open_changeprofile() {
-        changeprofile_activity.launch(userform)
-    }
 
     /**
      * Changed user profile by texts that we got from FillFormActivity
@@ -260,12 +242,10 @@ class EditProfileActivity : AppCompatActivity() {
      */
     private fun openSenderApp() {
         if (imageUser == Uri.parse(
-                "android.resource://"
-                        + getPackageName() + "/" + R.drawable.ic_baseline_add_photo_alternate_24
+                "android.resource://" + getPackageName() + "/" + R.drawable.ic_baseline_add_photo_alternate_24
             )
         ) {
             Toast.makeText(this, "Oops, your profile image is empty...", Toast.LENGTH_LONG).show()
-
         } else if (userform.realCreate == false) {
             Toast.makeText(this, "Oops, your account is empty...", Toast.LENGTH_LONG).show()
         } else {
