@@ -1,4 +1,20 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+
+    <string-array name="action_with_photo">
+        <item>Сделать фото</item>
+        <item>Выбрать фото</item>
+    </string-array>
+
+    <string name="title_alert_dialog">Выбрать...</string>
+
+    <string name="info_dialog_title">Доступ к камере</string>
+    <string name="info_dialog_message">Разрешить доступ</string>
+    <string name="info_dialog_allow">Дать доступ</string>
+    <string name="info_dialog_cancel">Отменить</string>
+
+    <string name="setting_title">Настройки</string>
+    <string name="setting_message">Перейти к настройкам камеры</string>
+    <string name="setting_open">Открыть настройки</string>
 </resources>

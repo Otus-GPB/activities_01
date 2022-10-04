@@ -1,15 +1,32 @@
 package otus.gpb.homework.activities
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
+    private var openCameraSetting = false
+
+    private val cameraLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+                isGranted ->
+            if (isGranted) {
+                makeCatPhoto()
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +45,84 @@ class EditProfileActivity : AppCompatActivity() {
                 }
             }
         }
+
+        imageView.setOnClickListener(){
+            showAlertDialog()
+        }
+    }
+    private fun showAlertDialog(){
+        val items = resources.getStringArray(R.array.action_with_photo)
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle(resources.getString(R.string.title_alert_dialog))
+            .setItems(items){dialog, which ->
+                when(which) {
+                    0 -> {
+                        requestPermissionWithRationale()
+                        dialog.dismiss()
+                    }
+                }
+            }
+            .show()
+    }
+    private fun requestPermissionWithRationale() {
+        when{
+            ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                makeCatPhoto()
+            }
+
+            // Выглядит как костыль, наверное есть более красивый метод, но у меня не получилось ;(
+            openCameraSetting -> getSetting()
+
+            ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA) -> {
+                showInfoDialog()
+                openCameraSetting = true
+            }
+            else -> {
+            requestPermission()
+            }
+        }
+    }
+
+    private fun requestPermission() {
+        cameraLauncher.launch(Manifest.permission.CAMERA)
+    }
+
+    private fun getSetting() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(resources.getString(R.string.setting_title))
+            .setMessage(resources.getString(R.string.setting_message))
+            .setPositiveButton(resources.getString(R.string.setting_open)){
+                _, _ ->
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.parse("package:$packageName"))
+                startActivity(intent)
+            }
+            .show()
+    }
+
+
+    private fun makeCatPhoto(){
+        imageView.setImageDrawable(
+            ContextCompat.getDrawable(this, R.drawable.cat)
+        )
+    }
+
+    private fun showInfoDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(resources.getString(R.string.info_dialog_title))
+            .setMessage(resources.getString(R.string.info_dialog_message))
+            .setNegativeButton(resources.getString(R.string.info_dialog_cancel)){
+                dialog, _ ->
+                dialog.dismiss()
+            }
+            .setPositiveButton(resources.getString(R.string.info_dialog_allow)){
+                dialog, _ ->
+                cameraLauncher.launch(Manifest.permission.CAMERA)
+                dialog.dismiss()
+            }
+            .show()
     }
 
     /**
