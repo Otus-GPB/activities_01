@@ -26,6 +26,9 @@ class EditProfileActivity : AppCompatActivity() {
                 makeCatPhoto()
             }
         }
+    private val selectImageFromGalleryResult = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let { populateImage(it) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,10 +63,19 @@ class EditProfileActivity : AppCompatActivity() {
                         requestPermissionWithRationale()
                         dialog.dismiss()
                     }
+                    1 ->{
+                        selectImageFromGallery()
+                        dialog.dismiss()
+                    }
                 }
             }
             .show()
     }
+
+    private fun selectImageFromGallery() {
+        selectImageFromGalleryResult.launch("image/*")
+    }
+
     private fun requestPermissionWithRationale() {
         when{
             ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA
