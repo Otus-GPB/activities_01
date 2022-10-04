@@ -18,7 +18,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
-    private var openCameraSetting = false
 
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
@@ -71,13 +70,8 @@ class EditProfileActivity : AppCompatActivity() {
             ) == PackageManager.PERMISSION_GRANTED -> {
                 makeCatPhoto()
             }
-
-            // Выглядит как костыль, наверное есть более красивый метод, но у меня не получилось ;(
-            openCameraSetting -> getSetting()
-
             ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA) -> {
                 showInfoDialog()
-                openCameraSetting = true
             }
             else -> {
             requestPermission()
@@ -115,6 +109,7 @@ class EditProfileActivity : AppCompatActivity() {
             .setMessage(resources.getString(R.string.info_dialog_message))
             .setNegativeButton(resources.getString(R.string.info_dialog_cancel)){
                 dialog, _ ->
+                getSetting()
                 dialog.dismiss()
             }
             .setPositiveButton(resources.getString(R.string.info_dialog_allow)){
