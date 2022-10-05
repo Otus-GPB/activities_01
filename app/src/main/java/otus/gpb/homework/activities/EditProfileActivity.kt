@@ -8,7 +8,9 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +18,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
+import java.lang.Exception
 
 const val ACTION_MAKE_PHOTO = 0
 const val ACTION_SELECT_PHOTO = 1
@@ -23,6 +27,11 @@ const val ACTION_SELECT_PHOTO = 1
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
+    private lateinit var textViewFirstName: TextView
+    private lateinit var textViewSecondName: TextView
+    private lateinit var textViewAge: TextView
+
+    private var imageUri :Uri? = null
 
     private val cameraPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
@@ -55,7 +64,23 @@ class EditProfileActivity : AppCompatActivity() {
     private val galleryPickerLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) {  uri ->
-        uri?.let { populateImage(it) }
+        uri?.let {
+            imageUri = uri
+            populateImage(it)
+        }
+    }
+
+    private val fillFormLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()){
+            result ->
+            when (result.resultCode) {
+                RESULT_OK -> result.data?.let {
+                    textViewFirstName.text = it.getStringExtra(FillFormActivity.EXTRA_FIRST_NAME)
+                    textViewSecondName.text = it.getStringExtra(FillFormActivity.EXTRA_SECOND_NAME)
+                    textViewAge.text = it.getStringExtra(FillFormActivity.EXTRA_AGE)
+                }
+            }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +89,12 @@ class EditProfileActivity : AppCompatActivity() {
         imageView = findViewById<ImageView?>(R.id.imageview_photo).apply {
             setOnClickListener { onAvatarClick() }
         }
+
+        textViewFirstName = findViewById(R.id.textview_name)
+        textViewSecondName = findViewById(R.id.textview_surname)
+        textViewAge = findViewById(R.id.textview_age)
+
+        findViewById<Button>(R.id.buttonFillForm).setOnClickListener { openFillForm() }
 
         findViewById<Toolbar>(R.id.toolbar).apply {
             inflateMenu(R.menu.menu)
@@ -153,6 +184,10 @@ class EditProfileActivity : AppCompatActivity() {
         galleryPickerLauncher.launch("image/*")
     }
 
+    private fun openFillForm() {
+        fillFormLauncher.launch(Intent(this, FillFormActivity::class.java))
+    }
+
     /**
      * Используйте этот метод чтобы отобразить картинку полученную из медиатеки в ImageView
      */
@@ -162,6 +197,20 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun openSenderApp() {
-        TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
+        val intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            type = "text/plain"
+            setPackage("org.telegram.messenger")
+            imageUri?.let { putExtra(Intent.EXTRA_STREAM, imageUri) }
+            putExtra(
+                Intent.EXTRA_TEXT,
+                "${textViewFirstName.text}\n${textViewSecondName.text}\n${textViewAge.text}"
+            )
+        }
+        try {
+            startActivity(intent)
+        } catch (e: Exception) {
+            Snackbar.make(findViewById<Button>(R.id.buttonFillForm), R.string.telegram_is_not_installed, Snackbar.LENGTH_SHORT).show()
+        }
     }
 }

@@ -9,4 +9,10 @@
     <string name="camera_access">Доступ к камере</string>
     <string name="camera_settings_rationale">Для включения разрешения перейдите в настройки.</string>
     <string name="open_settings">Открыть настройки</string>
+    <string name="edit_profile">Редактировать профиль</string>
+    <string name="name">Имя</string>
+    <string name="second_name">Фамилия</string>
+    <string name="age">Возраст</string>
+    <string name="apply">Применить</string>
+    <string name="telegram_is_not_installed">"Телеграм не установлен"</string>
 </resources>
