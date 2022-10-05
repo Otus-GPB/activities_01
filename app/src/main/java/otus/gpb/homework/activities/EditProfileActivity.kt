@@ -7,7 +7,9 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -19,6 +21,12 @@ class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
 
+    private lateinit var tvName:TextView
+    private lateinit var tvSurname:TextView
+    private lateinit var tvAge:TextView
+
+    private lateinit var imageFromGallery :Uri
+
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
                 isGranted ->
@@ -26,14 +34,32 @@ class EditProfileActivity : AppCompatActivity() {
                 makeCatPhoto()
             }
         }
-    private val selectImageFromGalleryResult = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let { populateImage(it) }
     }
+
+    private val fillFormLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()){
+                result ->
+                if(result.resultCode == RESULT_OK){
+                    result.data?.let{
+                        tvName.text = it.getStringExtra("name")
+                        tvSurname.text = it.getStringExtra("surname")
+                        tvAge.text = it.getStringExtra("age")
+                    }
+                }
+
+        }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
         imageView = findViewById(R.id.imageview_photo)
+
+        tvName = findViewById<TextView>(R.id.textview_name)
+        tvSurname = findViewById<TextView>(R.id.textview_surname)
+        tvAge = findViewById<TextView>(R.id.textview_age)
 
         findViewById<Toolbar>(R.id.toolbar).apply {
             inflateMenu(R.menu.menu)
@@ -51,21 +77,23 @@ class EditProfileActivity : AppCompatActivity() {
         imageView.setOnClickListener(){
             showAlertDialog()
         }
+        findViewById<Button>(R.id.button4).setOnClickListener(){
+            fillFormLauncher.launch(Intent(this, FillFromActivity::class.java))
+        }
+
     }
     private fun showAlertDialog(){
         val items = resources.getStringArray(R.array.action_with_photo)
 
         MaterialAlertDialogBuilder(this)
             .setTitle(resources.getString(R.string.title_alert_dialog))
-            .setItems(items){dialog, which ->
+            .setItems(items){_, which ->
                 when(which) {
                     0 -> {
                         requestPermissionWithRationale()
-                        dialog.dismiss()
                     }
                     1 ->{
                         selectImageFromGallery()
-                        dialog.dismiss()
                     }
                 }
             }
@@ -73,7 +101,7 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun selectImageFromGallery() {
-        selectImageFromGalleryResult.launch("image/*")
+        galleryLauncher.launch("image/*")
     }
 
     private fun requestPermissionWithRationale() {
@@ -120,14 +148,12 @@ class EditProfileActivity : AppCompatActivity() {
             .setTitle(resources.getString(R.string.info_dialog_title))
             .setMessage(resources.getString(R.string.info_dialog_message))
             .setNegativeButton(resources.getString(R.string.info_dialog_cancel)){
-                dialog, _ ->
+                _, _ ->
                 getSetting()
-                dialog.dismiss()
             }
             .setPositiveButton(resources.getString(R.string.info_dialog_allow)){
-                dialog, _ ->
+                _ , _ ->
                 cameraLauncher.launch(Manifest.permission.CAMERA)
-                dialog.dismiss()
             }
             .show()
     }
@@ -138,9 +164,30 @@ class EditProfileActivity : AppCompatActivity() {
     private fun populateImage(uri: Uri) {
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
         imageView.setImageBitmap(bitmap)
+        
+        imageFromGallery = uri
     }
 
     private fun openSenderApp() {
-        TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
+        val telegramIntent = Intent()
+
+        telegramIntent.action = Intent.ACTION_SEND
+
+        telegramIntent.type = "text/plain"
+
+        telegramIntent.putExtra(
+                Intent.EXTRA_TEXT,
+                "${tvName.text}" +
+                        "\n${tvSurname.text}" +
+                        "\n${tvAge.text}"
+            )
+
+        telegramIntent.putExtra(Intent.EXTRA_STREAM, imageFromGallery)
+
+
+        telegramIntent.setPackage("org.telegram.messenger")
+
+        startActivity(telegramIntent)
     }
+
 }

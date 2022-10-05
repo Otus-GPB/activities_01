@@ -17,4 +17,12 @@
     <string name="setting_title">Настройки</string>
     <string name="setting_message">Перейти к настройкам камеры</string>
     <string name="setting_open">Открыть настройки</string>
+
+
+    <string name="tv_name">Введите своё имя</string>
+    <string name="tv_surname">Введите свою фамилию</string>
+    <string name="tv_age">Введите свой возраст</string>
+    <string name="tv_form">Заполните форму</string>
+
+    <string name="btn_apply">Применить</string>
 </resources>
