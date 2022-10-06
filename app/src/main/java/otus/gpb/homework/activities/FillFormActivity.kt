@@ -11,11 +11,7 @@ const val FILL_FORM_USER_SURNAME_KEY = "Surname"
 const val FILL_FORM_USER_AGE_KEY = "Age"
 
 class FillFormActivity : AppCompatActivity() {
-    private fun returnResult() {
-        val name = findViewById<EditText>(R.id.editTextPersonName).text.toString()
-        val surname = findViewById<EditText>(R.id.editTextPersonSurname).text.toString()
-        val age = findViewById<EditText>(R.id.editTextPersonAge).text.toString()
-
+    private fun returnResult(name: String, surname: String, age: String) {
         val intent = Intent()
             .putExtra(FILL_FORM_USER_NAME_KEY, name)
             .putExtra(FILL_FORM_USER_SURNAME_KEY, surname)
@@ -27,8 +23,12 @@ class FillFormActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fill_form)
 
+        val name = findViewById<EditText>(R.id.editTextPersonName)
+        val surname = findViewById<EditText>(R.id.editTextPersonSurname)
+        val age = findViewById<EditText>(R.id.editTextPersonAge)
+
         findViewById<Button>(R.id.applyFormButton).setOnClickListener {
-            returnResult()
+            returnResult(name.text.toString(), surname.text.toString(), age.text.toString())
             finish()
         }
     }

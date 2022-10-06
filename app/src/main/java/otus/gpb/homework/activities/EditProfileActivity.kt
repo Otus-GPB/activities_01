@@ -17,13 +17,6 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class EditProfileActivity : AppCompatActivity() {
-
-    companion object {
-        const val TYPE_IMAGE = "image/*"
-        const val TYPE_PLAIN_TEXT = "text/plain"
-        const val SENDER_APP_PACKAGE = "org.telegram.messenger"
-    }
-
     private lateinit var imageView: ImageView
     private lateinit var userName: TextView
     private lateinit var userSurname: TextView
@@ -50,7 +43,7 @@ class EditProfileActivity : AppCompatActivity() {
         it?.let { populateImage(it) }
     }
 
-    private val cameraPermissionRequestLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+    private val cameraPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
         granted ->
         if (granted) {
             takePhoto()
@@ -78,7 +71,7 @@ class EditProfileActivity : AppCompatActivity() {
             setTitle(R.string.rationale_dialog_title)
             setMessage(R.string.rationale_dialog_msg)
             setPositiveButton(R.string.rationale_dialog_ok) {
-                dialog, _ -> cameraPermissionRequestLauncher.launch(permission)
+                dialog, _ -> cameraPermissionLauncher.launch(permission)
                 dialog.dismiss()
             }
             setNegativeButton(R.string.rationale_dialog_cancel) {
@@ -93,7 +86,7 @@ class EditProfileActivity : AppCompatActivity() {
         val permission = android.Manifest.permission.CAMERA
         if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED) {
             if (!shouldShowRequestPermissionRationale(permission)) {
-                cameraPermissionRequestLauncher.launch(permission)
+                cameraPermissionLauncher.launch(permission)
             } else {
                 showRationaleDialog(permission)
             }
@@ -109,7 +102,7 @@ class EditProfileActivity : AppCompatActivity() {
             setItems(items) {
                 dialog, which -> when(which) {
                     0 -> getCameraPermission()
-                    else -> takePictureLauncher.launch(TYPE_IMAGE)
+                    else -> takePictureLauncher.launch("image/*")
                 }
                 dialog.dismiss()
             }
@@ -162,10 +155,9 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun openSenderApp() {
-        imageView.drawable
         val intent = Intent(Intent.ACTION_SEND).apply {
-            type = TYPE_PLAIN_TEXT
-            setPackage(SENDER_APP_PACKAGE)
+            type = "text/plain"
+            setPackage("org.telegram.messenger")
             putExtra(Intent.EXTRA_TEXT, "${userName.text}\n${userSurname.text}\n${userAge.text}")
             if (imageViewUri != null) {
                 putExtra(Intent.EXTRA_STREAM, imageViewUri)
