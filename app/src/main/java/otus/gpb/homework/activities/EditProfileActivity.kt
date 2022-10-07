@@ -1,6 +1,7 @@
 package otus.gpb.homework.activities
 
 import android.Manifest
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -8,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -19,10 +21,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import java.lang.Exception
 
 const val ACTION_MAKE_PHOTO = 0
 const val ACTION_SELECT_PHOTO = 1
+
+const val TAG = "EditProfileActivity"
 
 class EditProfileActivity : AppCompatActivity() {
 
@@ -94,7 +97,9 @@ class EditProfileActivity : AppCompatActivity() {
         textViewSecondName = findViewById(R.id.textview_surname)
         textViewAge = findViewById(R.id.textview_age)
 
-        findViewById<Button>(R.id.buttonFillForm).setOnClickListener { openFillForm() }
+        findViewById<Button>(R.id.buttonFillForm).setOnClickListener {
+            fillFormLauncher.launch(Intent(this, FillFormActivity::class.java))
+        }
 
         findViewById<Toolbar>(R.id.toolbar).apply {
             inflateMenu(R.menu.menu)
@@ -120,7 +125,7 @@ class EditProfileActivity : AppCompatActivity() {
             .setItems(items) { _, which ->
                 when (which) {
                     ACTION_MAKE_PHOTO -> makePhoto()
-                    ACTION_SELECT_PHOTO -> pickPhotoFromGallery()
+                    ACTION_SELECT_PHOTO -> galleryPickerLauncher.launch("image/*")
                 }
             }
             .show()
@@ -171,21 +176,9 @@ class EditProfileActivity : AppCompatActivity() {
             .setTitle(R.string.camera_access)
             .setMessage(R.string.camera_settings_rationale)
             .setPositiveButton(R.string.open_settings) { _, _ ->
-                openSettings()
+                settingsLauncher.launch("")
             }
             .show()
-    }
-
-    private fun openSettings() {
-        settingsLauncher.launch("")
-    }
-
-    private fun pickPhotoFromGallery() {
-        galleryPickerLauncher.launch("image/*")
-    }
-
-    private fun openFillForm() {
-        fillFormLauncher.launch(Intent(this, FillFormActivity::class.java))
     }
 
     /**
@@ -209,8 +202,13 @@ class EditProfileActivity : AppCompatActivity() {
         }
         try {
             startActivity(intent)
-        } catch (e: Exception) {
-            Snackbar.make(findViewById<Button>(R.id.buttonFillForm), R.string.telegram_is_not_installed, Snackbar.LENGTH_SHORT).show()
+        } catch (e: ActivityNotFoundException) {
+            Log.e(TAG, "Error starting telegram: ${e.message}")
+            Snackbar.make(
+                findViewById<Button>(R.id.buttonFillForm),
+                R.string.telegram_is_not_installed,
+                Snackbar.LENGTH_SHORT)
+                .show()
         }
     }
 }
