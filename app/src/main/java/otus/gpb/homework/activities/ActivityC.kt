@@ -18,7 +18,7 @@ class ActivityC : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_open_activity_d).setOnClickListener {
             val intent = Intent(this, ActivityD::class.java)
-                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             finishAffinity()
             startActivity(intent)
         }
@@ -28,10 +28,7 @@ class ActivityC : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btn_close_stack).setOnClickListener {
-            val intent = Intent(this, ActivityA::class.java)
-                .setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
             finishAffinity()
-            startActivity(intent)
         }
     }
 }
