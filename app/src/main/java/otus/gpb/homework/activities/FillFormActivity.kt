@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 
-class FillFormActivity : AppCompatActivity() {
+class FillFormActivity : AppCompatActivity(), PersonalData {
     private lateinit var name: EditText
     private lateinit var surname: EditText
     private lateinit var age: EditText
@@ -24,17 +24,11 @@ class FillFormActivity : AppCompatActivity() {
 
     private fun returnResult() {
         val result = Intent()
-            .putExtra(NAME, name.text.toString())
-            .putExtra(SURNAME, surname.text.toString())
-            .putExtra(AGE, age.text.toString())
+            .putExtra(PersonalData.NAME, name.text.toString())
+            .putExtra(PersonalData.SURNAME, surname.text.toString())
+            .putExtra(PersonalData.AGE, age.text.toString())
 
         setResult(RESULT_OK, result)
         finish()
-    }
-
-    companion object {
-        const val NAME = "name_from_fill_form"
-        const val SURNAME = "surname_from_fill_form"
-        const val AGE = "age_from_fill_form"
     }
 }

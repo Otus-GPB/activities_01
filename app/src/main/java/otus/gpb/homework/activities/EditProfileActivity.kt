@@ -2,6 +2,7 @@ package otus.gpb.homework.activities
 
 import android.Manifest
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
@@ -11,6 +12,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,7 +26,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 private const val TAG = "EditProfileActivity"
 private const val PERMISSION_REQUEST_CAMERA = 0
 
-class EditProfileActivity : AppCompatActivity() {
+class EditProfileActivity : AppCompatActivity(), PersonalData {
 
     private lateinit var imageView: ImageView
     private lateinit var name: TextView
@@ -40,9 +42,9 @@ class EditProfileActivity : AppCompatActivity() {
                 result ?: return
                 if (result.resultCode == Activity.RESULT_OK) {
                     Log.d(TAG, "result from fillFormActivity OK")
-                    name.text = result.data?.getStringExtra(NAME)
-                    surname.text = result.data?.getStringExtra(SURNAME)
-                    age.text = result.data?.getStringExtra(AGE)
+                    name.text = result.data?.getStringExtra(PersonalData.NAME)
+                    surname.text = result.data?.getStringExtra(PersonalData.SURNAME)
+                    age.text = result.data?.getStringExtra(PersonalData.AGE)
                 }
             }
         }
@@ -51,7 +53,9 @@ class EditProfileActivity : AppCompatActivity() {
     private val selectPhoto =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             _uri = uri
-            uri?.let { imageView.setImageURI(uri) }
+            uri?.let {
+                populateImage(uri)
+            }
         }
 
 
@@ -75,7 +79,18 @@ class EditProfileActivity : AppCompatActivity() {
                 }
             }
         }
-        findViewById<ImageView>(R.id.imageview_photo).setOnClickListener { takePhoto() }
+        findViewById<ImageView>(R.id.imageview_photo).setOnClickListener {
+//            takePhoto()
+            val items = arrayOf("Сделать фото", "Выбрать фото")
+
+            MaterialAlertDialogBuilder(this)
+                .setItems(items) { _, which ->
+                    when (which) {
+                        0 -> showCameraPreview()
+                        1 -> selectPhoto.launch("image/")
+                    }
+                }.show()
+        }
         findViewById<Button>(R.id.button_edit).setOnClickListener {
             editProfile.launch(
                 Intent(
@@ -96,8 +111,7 @@ class EditProfileActivity : AppCompatActivity() {
             if (grantResults.isEmpty()) {
                 Log.d(TAG, "PERMISSION_REQUEST_CAMERA do not have")
             } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.d(TAG, "есть разрешение")
-                startCamera()
+                imageView.setImageResource(R.drawable.cat)
             } else {
                 Log.d(TAG, "ничего не делать!")
             }
@@ -105,26 +119,13 @@ class EditProfileActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    private fun takePhoto() {
-        val items = arrayOf("Сделать фото", "Выбрать фото")
-
-        MaterialAlertDialogBuilder(this)
-            .setItems(items) { _, which ->
-                when (which) {
-                    0 -> showCameraPreview()
-                    1 -> selectPhoto.launch("image/")
-                }
-            }.show()
-    }
-
-
     private fun showCameraPreview() {
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.CAMERA
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            startCamera()
+            imageView.setImageResource(R.drawable.cat)
         } else {
             doCameraPermission()
         }
@@ -176,11 +177,6 @@ class EditProfileActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun startCamera() {
-        Log.d(TAG, "Start Camera")
-        imageView.setImageResource(R.drawable.cat)
-    }
-
     /**
      * Используйте этот метод чтобы отобразить картинку полученную из медиатеки в ImageView
      */
@@ -190,19 +186,19 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun openSenderApp() {
-        val sendIntent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, "${name.text} ${surname.text} ${age.text}")
-            putExtra(Intent.EXTRA_STREAM, _uri)
-            type = "*/*"
+        try {
+            val sendIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                setPackage("org.telegram.messenger")
+                putExtra(Intent.EXTRA_TEXT, "${name.text} ${surname.text} ${age.text}")
+                putExtra(Intent.EXTRA_STREAM, _uri)
+                type = "*/*"
+            }
+            startActivity(sendIntent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(this, "Telegram not found", Toast.LENGTH_SHORT).show()
+            Log.e(TAG, e.message.toString())
         }
-        startActivity(sendIntent)
-    }
 
-
-    companion object {
-        const val NAME = "name_from_fill_form"
-        const val SURNAME = "surname_from_fill_form"
-        const val AGE = "age_from_fill_form"
     }
 }
