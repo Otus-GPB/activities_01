@@ -12,6 +12,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,6 +21,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.lang.Exception
 
 
 class EditProfileActivity : AppCompatActivity() {
@@ -36,7 +38,24 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
     private val requestCameraPermission =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted: Boolean ->
+            if (granted) {
+                imageView
+            } else if (!shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) && ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_DENIED
+            ) {
+                MaterialAlertDialogBuilder(this)
+                    .setPositiveButton("Открыть настройки") { _, _ ->
+                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                        val uri = Uri.fromParts("package", packageName, null)
+                        intent.data = uri
+                        startActivity(intent)
+                    }
+                    .show()
+            }
+        }
 
     private val startActivityResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult(),
@@ -107,20 +126,27 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun openSenderApp() {
-        val sendIntent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, "${textName.text} ${textSname.text} ${textAge.text}")
-            putExtra(Intent.EXTRA_STREAM, uriSave)
-            type = "text/plain"
+        try {
+            val sendIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                `package` = "org.telegram.messenger"
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    "${textName.text} ${textSname.text} ${textAge.text}".trim()
+                )
+                putExtra(Intent.EXTRA_STREAM, uriSave)
+                type = "text/plain"
+            }
+            startActivity(sendIntent)
+        } catch (e: Exception) {
+            Toast.makeText(this, "Не удалось сформировать сообщение", Toast.LENGTH_SHORT).show()
         }
-        startActivity(sendIntent)
     }
 
     private fun requestCameraPermission() {
         val isShould: Boolean =
             ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)
         when {
-            // разрешение есть
             ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.CAMERA
@@ -128,37 +154,20 @@ class EditProfileActivity : AppCompatActivity() {
                 imageView.setImageResource(R.drawable.cat)
             }
 
-            // вторая попытка добыть разрешение
-            isShould -> {
-                MaterialAlertDialogBuilder(this)
-                    .setTitle("Доступ к камере")
-                    .setMessage("Нам нужна камера, чтобы сфотографировать котика")
-                    .setNegativeButton("Отмена") { dialog, which ->
-                        // грустно
-                    }
-                    .setPositiveButton("Дать доступ") { dialog, which ->
-                        requestCameraPermission.launch(Manifest.permission.CAMERA)
-                    }
-                    .show()
-            }
+            isShould -> MaterialAlertDialogBuilder(this)
+                .setTitle("Доступ к камере")
+                .setMessage("Нам нужна камера, чтобы сфотографировать котика")
+                .setNegativeButton("Отмена") { _, _ ->
+                    // грустно
+                }
+                .setPositiveButton("Дать доступ") { _, _ ->
+                    requestCameraPermission.launch(Manifest.permission.CAMERA)
+                }
+                .show()
 
-            // разрешения через настройки
-            !isShould && ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.CAMERA
-            ) == PackageManager.PERMISSION_DENIED -> {
-                MaterialAlertDialogBuilder(this)
-                    .setPositiveButton("Открыть настройки") { dialog, which ->
-                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                        val uri = Uri.fromParts("package", packageName, null)
-                        intent.data = uri
-                        startActivity(intent)
-                    }
-                    .show()
+            else -> {
+                requestCameraPermission.launch(Manifest.permission.CAMERA)
             }
-
-            // еще не было запроса на доступ к камере
-            else -> requestCameraPermission.launch(Manifest.permission.CAMERA)
         }
     }
 }
