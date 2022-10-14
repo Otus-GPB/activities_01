@@ -28,10 +28,11 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var imageFromGallery :Uri
 
     private val cameraLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-                isGranted ->
-            if (isGranted) {
-                makeCatPhoto()
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            when{
+                granted -> {
+                    makeCatPhoto()
+                }
             }
         }
     private val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -90,7 +91,11 @@ class EditProfileActivity : AppCompatActivity() {
             .setItems(items){_, which ->
                 when(which) {
                     0 -> {
-                        requestPermissionWithRationale()
+                        if(shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)){
+                            showInfoDialog()
+                        }else{
+                            cameraLauncher.launch(Manifest.permission.CAMERA)
+                        }
                     }
                     1 ->{
                         selectImageFromGallery()
@@ -102,25 +107,6 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun selectImageFromGallery() {
         galleryLauncher.launch("image/*")
-    }
-
-    private fun requestPermissionWithRationale() {
-        when{
-            ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                makeCatPhoto()
-            }
-            ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA) -> {
-                showInfoDialog()
-            }
-            else -> {
-            requestPermission()
-            }
-        }
-    }
-
-    private fun requestPermission() {
-        cameraLauncher.launch(Manifest.permission.CAMERA)
     }
 
     private fun getSetting() {
@@ -164,7 +150,7 @@ class EditProfileActivity : AppCompatActivity() {
     private fun populateImage(uri: Uri) {
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
         imageView.setImageBitmap(bitmap)
-        
+
         imageFromGallery = uri
     }
 
