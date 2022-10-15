@@ -15,7 +15,7 @@ class ActivityA : AppCompatActivity() {
 
     private val onClickStartB = View.OnClickListener {
         val i = Intent(this, ActivityB::class.java)
-            .setFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(i)
     }
 

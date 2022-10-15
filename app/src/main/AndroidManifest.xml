@@ -19,14 +19,10 @@
         <activity
             android:name=".ActivityC"
             android:exported="false"
-            android:taskAffinity=""
             />
         <activity
             android:name=".ActivityB"
-            android:exported="false"
-            android:taskAffinity=""
-            android:launchMode="singleTask"
-            >
+            android:exported="false">
         </activity>
         <activity
             android:name=".ActivityA"

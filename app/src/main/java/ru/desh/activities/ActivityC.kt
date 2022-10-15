@@ -17,15 +17,16 @@ class ActivityC : AppCompatActivity() {
     }
     private val onClickStartD = View.OnClickListener {
         val i = Intent(this, ActivityD::class.java)
+        i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or
+        Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(i)
-        finishAffinity()
     }
 
     private val onClickCloseC = View.OnClickListener { finish() }
 
     private val onClickCloseStack = View.OnClickListener {
-        val i = Intent(this, ActivityA::class.java)
-        startActivity(i)
+//        val i = Intent(this, ActivityA::class.java)
+//        startActivity(i)
         finishAffinity()
     }
 
