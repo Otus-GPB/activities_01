@@ -2,6 +2,7 @@ package otus.gpb.homework.activities
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
@@ -28,7 +29,6 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var surName: TextView
     private lateinit var age: TextView
     private lateinit var uriForIntent: Uri
-
 
     private val launcherPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted: Boolean ->
@@ -63,7 +63,6 @@ class EditProfileActivity : AppCompatActivity() {
                 Toast.makeText(this, "Сведения не сохранялись", Toast.LENGTH_SHORT).show()
             }
         }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,9 +103,7 @@ class EditProfileActivity : AppCompatActivity() {
         editProfile.setOnClickListener {
             openFillFormActivity()
         }
-
     }
-
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun getPicture() {
@@ -131,10 +128,7 @@ class EditProfileActivity : AppCompatActivity() {
             else -> launcherPermission.launch(
                 Manifest.permission.CAMERA
             )
-
         }
-
-
     }
 
     private fun showRationalDialog() {
@@ -146,7 +140,6 @@ class EditProfileActivity : AppCompatActivity() {
             }
             .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 launcherPermission.launch(Manifest.permission.CAMERA)
-
             }
             .show()
     }
@@ -169,7 +162,6 @@ class EditProfileActivity : AppCompatActivity() {
     private fun openFillFormActivity() {
         val intent = Intent(this, FillFormActivity::class.java)
         gettingTextLauncher.launch(intent)
-
     }
 
 
@@ -193,7 +185,11 @@ class EditProfileActivity : AppCompatActivity() {
             )
             putExtra(Intent.EXTRA_STREAM, uriForIntent)
         }
-        startActivity(sendIntent)
+        try {
+            startActivity(sendIntent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(this, "Telegram not installed", Toast.LENGTH_SHORT).show()
+        }
     }
 
     companion object {
