@@ -58,6 +58,33 @@ class EditProfileActivity : AppCompatActivity(), PersonalData {
             }
         }
 
+    private val launcher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            imageView.setImageResource(R.drawable.cat)
+        } else {
+            requestPermissionWithRationale()
+        }
+    }
+
+
+    private fun requestPermissionWithRationale() {
+        when {
+            ContextCompat.checkSelfPermission(
+                this, Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                imageView.setImageResource(R.drawable.cat)
+            }
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this, Manifest.permission.CAMERA
+            ) -> {
+                // show dialog, invoke requestPermission() when confirm
+                openAppSettings()
+            }
+            else -> showRationaleDialog()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,13 +107,12 @@ class EditProfileActivity : AppCompatActivity(), PersonalData {
             }
         }
         findViewById<ImageView>(R.id.imageview_photo).setOnClickListener {
-//            takePhoto()
             val items = arrayOf("Сделать фото", "Выбрать фото")
 
             MaterialAlertDialogBuilder(this)
                 .setItems(items) { _, which ->
                     when (which) {
-                        0 -> showCameraPreview()
+                        0 -> launcher.launch(Manifest.permission.CAMERA)
                         1 -> selectPhoto.launch("image/")
                     }
                 }.show()
@@ -102,50 +128,13 @@ class EditProfileActivity : AppCompatActivity(), PersonalData {
 
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == PERMISSION_REQUEST_CAMERA) {
-            if (grantResults.isEmpty()) {
-                Log.d(TAG, "PERMISSION_REQUEST_CAMERA do not have")
-            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                imageView.setImageResource(R.drawable.cat)
-            } else {
-                Log.d(TAG, "ничего не делать!")
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
-    private fun showCameraPreview() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.CAMERA
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            imageView.setImageResource(R.drawable.cat)
-        } else {
-            doCameraPermission()
-        }
-    }
-
-    private fun doCameraPermission() {
-        Log.d(TAG, "Requested camera permission")
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
-            showRationaleDialog()
-        } else {
-            requestCameraPermission()
-        }
-    }
-
     private fun requestCameraPermission() {
         ActivityCompat.requestPermissions(
             this,
             arrayOf(Manifest.permission.CAMERA),
             PERMISSION_REQUEST_CAMERA
         )
+        imageView.setImageResource(R.drawable.cat)
     }
 
     private fun showRationaleDialog() {
