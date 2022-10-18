@@ -2,7 +2,6 @@ package otus.gpb.homework.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
@@ -16,6 +15,7 @@ class ActivityA : AppCompatActivity() {
 
         findViewById<Button>(R.id.activity_b_button).setOnClickListener {
             val intent = Intent(this, ActivityB::class.java)
+            intent.flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
         }
     }
