@@ -1,10 +1,8 @@
 package otus.gpb.homework.activities
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -17,14 +15,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.io.ByteArrayOutputStream
-import java.io.FileOutputStream
 
 class EditProfileActivity : AppCompatActivity() {
 
-    private lateinit var bitmap: Bitmap
+    private lateinit var uri: Uri
     private lateinit var imageView: ImageView
     private val cameraRequestLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
@@ -43,7 +38,10 @@ class EditProfileActivity : AppCompatActivity() {
 
     private val photoFromGalleryLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) {
-            it?.let { populateImage(it) }
+            it?.let {
+                uri = it
+                populateImage(it)
+            }
         }
 
     private val editProfileButton =
@@ -95,8 +93,7 @@ class EditProfileActivity : AppCompatActivity() {
      * Используйте этот метод чтобы отобразить картинку полученную из медиатеки в ImageView
      */
     private fun populateImage(uri: Uri) {
-        bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
-
+        val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
         imageView.setImageBitmap(bitmap)
     }
 
@@ -107,12 +104,9 @@ class EditProfileActivity : AppCompatActivity() {
 
         val intent = Intent(Intent.ACTION_SEND)
             .putExtra(Intent.EXTRA_TEXT, "$name\n$lastName\n$age")
+            .putExtra(Intent.EXTRA_STREAM, uri)
             .setPackage("org.telegram.messenger")
-            .setType("text/plain")
-//            .putExtra("Img", imageView.drawable.toBitmap())
-//        Никак не получается добавить изображение в интент. Потратил несколько часов, ничего не нашел
-//        Прошу помощи
-
+            .setType("image/*")
         startActivity(Intent.createChooser(intent, "Select TELEGRAM"))
     }
 
