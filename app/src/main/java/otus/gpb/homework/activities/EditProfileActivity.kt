@@ -47,6 +47,8 @@ class EditProfileActivity : AppCompatActivity() {
                 ) == PackageManager.PERMISSION_DENIED
             ) {
                 MaterialAlertDialogBuilder(this)
+                    .setTitle("Доступ через настройки")
+                    .setMessage("Вы несколько раз запретили доступ к камере.\nПожалуйста, дайте доступ через настройки.")
                     .setPositiveButton("Открыть настройки") { _, _ ->
                         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                         val uri = Uri.fromParts("package", packageName, null)
