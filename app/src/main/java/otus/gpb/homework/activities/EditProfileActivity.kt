@@ -14,7 +14,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts.*
+import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -47,9 +50,9 @@ class EditProfileActivity : AppCompatActivity() {
 
     private val getUserData = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            val name = result.data?.getStringExtra(IntentUtils.NAME) ?: ""
-            val surname = result.data?.getStringExtra(IntentUtils.SURNAME) ?: ""
-            val age = result.data?.getStringExtra(IntentUtils.AGE) ?: ""
+            val name = result.data?.getStringExtra(NAME) ?: ""
+            val surname = result.data?.getStringExtra(SURNAME) ?: ""
+            val age = result.data?.getStringExtra(AGE) ?: ""
             updateUserData(name = name, surname = surname, age = age)
         }
     }
@@ -164,7 +167,7 @@ class EditProfileActivity : AppCompatActivity() {
         val text = "${textViewName.text}\n${textViewSurname.text}\n${textViewAge.text}"
         try {
             val intent = Intent(Intent.ACTION_SEND).apply {
-                setPackage(IntentUtils.TELEGRAM_PACKAGE)
+                setPackage(TELEGRAM_PACKAGE)
                 type = "image/*"
                 putExtra(Intent.EXTRA_TEXT, text)
                 putExtra(Intent.EXTRA_STREAM, imageUri)
@@ -174,6 +177,13 @@ class EditProfileActivity : AppCompatActivity() {
             Toast.makeText(this, getString(R.string.telegram_not_installed), Toast.LENGTH_SHORT)
                 .show()
         }
+    }
+
+    companion object {
+        const val NAME = "name"
+        const val SURNAME = "surname"
+        const val AGE = "age"
+        const val TELEGRAM_PACKAGE = "org.telegram.messenger"
     }
 
 }

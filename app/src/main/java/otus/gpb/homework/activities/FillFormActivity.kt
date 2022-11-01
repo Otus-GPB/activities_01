@@ -2,10 +2,10 @@ package otus.gpb.homework.activities
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 
 class FillFormActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,9 +18,9 @@ class FillFormActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.button_apply).setOnClickListener {
             val data = Intent().apply {
-                putExtra(IntentUtils.NAME, editTextName.text.toString())
-                putExtra(IntentUtils.SURNAME, editTextSurname.text.toString())
-                putExtra(IntentUtils.AGE, editTextAge.text.toString())
+                putExtra(EditProfileActivity.NAME, editTextName.text.toString())
+                putExtra(EditProfileActivity.SURNAME, editTextSurname.text.toString())
+                putExtra(EditProfileActivity.AGE, editTextAge.text.toString())
             }
 
             setResult(Activity.RESULT_OK, data)
