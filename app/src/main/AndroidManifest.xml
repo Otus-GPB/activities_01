@@ -4,6 +4,13 @@
     package="otus.gpb.homework.activities">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <queries>
+        <package android:name="org.telegram.messenger"/>
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="*/*" />
+        </intent>
+    </queries>
 
     <application
         android:allowBackup="true"

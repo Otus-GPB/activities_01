@@ -9,11 +9,15 @@ import android.widget.EditText
 
 class FillFormActivity : AppCompatActivity() {
 
+    private lateinit var formName: EditText
+    private lateinit var formSurname: EditText
+    private lateinit var formAge: EditText
+
     private val onClickApply = View.OnClickListener {
         val profile = Profile(
-            name = findViewById<EditText>(R.id.fill_form_name).text.toString(),
-            surname = findViewById<EditText>(R.id.fill_form_surname).text.toString(),
-            age = findViewById<EditText>(R.id.fill_form_age).text.toString().toInt()
+            name = formName.text.toString(),
+            surname = formSurname.text.toString(),
+            age = formAge.text.toString().toInt()
         )
         val resultData = Intent()
             .putExtra(EditProfileContract.EXTRA_MESSAGE, profile)
@@ -24,6 +28,9 @@ class FillFormActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fill_form)
+        formName = findViewById(R.id.fill_form_name)
+        formSurname = findViewById(R.id.fill_form_surname)
+        formAge = findViewById(R.id.fill_form_age)
         findViewById<Button>(R.id.fill_form_apply_button).setOnClickListener(onClickApply)
     }
 }

@@ -12,6 +12,7 @@
     <string name="rationale_positive">Дать доступ</string>
     <string name="rationale_negative">Отмена</string>
     <string name="settings_alert_title">Требуется разрешение</string>
+    <string name="no_telegram_alert_message">Для того чтобы поделиться профилем, установите Telegram</string>
     <string name="open_settings">Открыть настройки</string>
     <string name="settings_result_negative">Невозможно сделать фото без доступа к камере!</string>
     <string name="fill_form_header">Заполнить профиль:</string>

@@ -1,6 +1,7 @@
 package otus.gpb.homework.activities
 
 import android.Manifest
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -8,7 +9,6 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -26,10 +26,15 @@ import com.google.android.material.snackbar.Snackbar
 class EditProfileActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "EditProfileActivity"
+        private const val TELEGRAM_PACKAGE = "org.telegram.messenger"
     }
 
     private lateinit var imageView: ImageView
     private lateinit var imageUri: Uri
+
+    private lateinit var profileName: TextView
+    private lateinit var profileSurname: TextView
+    private lateinit var profileAge: TextView
 
     private val actionMakePhoto by lazy {Pair(0, getString(R.string.action_make_photo))}
     private val actionChoosePhoto by lazy {Pair(1, getString(R.string.action_choose_photo))}
@@ -55,6 +60,10 @@ class EditProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
         imageView = findViewById(R.id.imageview_photo)
+        profileName = findViewById(R.id.edit_profile_name)
+        profileSurname = findViewById(R.id.edit_profile_surname)
+        profileAge = findViewById(R.id.edit_profile_age)
+
         imageView.setOnClickListener(onClickAddImage)
 
         findViewById<Toolbar>(R.id.toolbar).apply {
@@ -73,9 +82,17 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun showCat() {
+        val rId = R.drawable.cat
         imageView.setImageDrawable(
-            ActivityCompat.getDrawable(this, R.drawable.cat)
+            ActivityCompat.getDrawable(this, rId)
         )
+        // Если доставать изображение из resources по uri, то
+        // Telegram выдает "Вложение не поддерживается"
+        imageUri = Uri.parse(
+            ContentResolver.SCHEME_CONTENT + "://" +
+                    resources.getResourcePackageName(rId) + '/' +
+                    resources.getResourceTypeName(rId) + '/' +
+                    resources.getResourceEntryName(rId) )
     }
 
     private val openSettingsLauncher = registerForActivityResult(
@@ -130,9 +147,9 @@ class EditProfileActivity : AppCompatActivity() {
         EditProfileContract()
     ) { profile ->
         profile?.let {
-            findViewById<TextView>(R.id.edit_profile_name).text = profile.name
-            findViewById<TextView>(R.id.edit_profile_surname).text = profile.surname
-            findViewById<TextView>(R.id.edit_profile_age).text = profile.age.toString()
+            profileName.text = profile.name
+            profileSurname.text = profile.surname
+            profileAge.text = profile.age.toString()
         }
 
     }
@@ -171,16 +188,32 @@ class EditProfileActivity : AppCompatActivity() {
         imageView.setImageBitmap(bitmap)
     }
 
+    private fun isTelegramInstalled(): Boolean {
+        return try {
+            packageManager.getPackageInfo(TELEGRAM_PACKAGE, 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
+    }
+
     private fun openSenderApp() {
-        val messageText = "${findViewById<TextView>(R.id.edit_profile_name).text}\n" +
-                "${findViewById<TextView>(R.id.edit_profile_surname).text}\n" +
-                "${findViewById<TextView>(R.id.edit_profile_age).text}\n"
-        val telegramIntent = Intent(
-            Intent.ACTION_SEND
-        ).setType("text/plain")
-            .putExtra(Intent.EXTRA_TEXT, messageText)
-            .putExtra(Intent.EXTRA_STREAM, imageUri)
-            .setPackage("org.telegram.messenger")
-        startActivity(telegramIntent)
+        if (isTelegramInstalled()) {
+            val messageText = "${profileName.text}\n" +
+                    "${profileSurname.text}\n" +
+                    "${profileAge.text}\n"
+            val telegramIntent = Intent(
+                Intent.ACTION_SEND
+            ).setType("text/plain")
+                .putExtra(Intent.EXTRA_TEXT, messageText)
+                .putExtra(Intent.EXTRA_STREAM, imageUri)
+                .setPackage(TELEGRAM_PACKAGE)
+            startActivity(telegramIntent)
+        } else {
+            // Т.к. Snackbar производит обход дерева Views в поисках подходящей для отображения,
+            // можем передать imageView
+            Snackbar.make(imageView, getString(R.string.no_telegram_alert_message)
+                , Snackbar.LENGTH_LONG).show()
+        }
     }
 }
