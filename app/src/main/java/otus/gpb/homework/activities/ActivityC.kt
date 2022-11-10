@@ -11,17 +11,16 @@ class ActivityC : AppCompatActivity() {
         setContentView(R.layout.activity_c)
         findViewById<Button>(R.id.btnOpenA).setOnClickListener {
             startActivity(Intent(this, ActivityA::class.java))
-            finishAffinity()
         }
         findViewById<Button>(R.id.btnOpenD).setOnClickListener {
-            startActivity(Intent(this, ActivityD::class.java)
-                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+            val intent = Intent(this, ActivityD::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
         }
         findViewById<Button>(R.id.btnCloseC).setOnClickListener {
             finish()
         }
         findViewById<Button>(R.id.btnCloseStack).setOnClickListener {
-            startActivity(Intent(this, ActivityA::class.java))
             finishAffinity()
         }
     }
