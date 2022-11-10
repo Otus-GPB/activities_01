@@ -10,12 +10,14 @@ import android.provider.Settings
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 
 class EditProfileActivity : AppCompatActivity() {
 
@@ -33,6 +35,7 @@ class EditProfileActivity : AppCompatActivity() {
                 granted -> {
                     makeCatPhoto()
                 }
+                !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> getSetting()
             }
         }
     private val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -90,14 +93,14 @@ class EditProfileActivity : AppCompatActivity() {
             .setTitle(resources.getString(R.string.title_alert_dialog))
             .setItems(items){_, which ->
                 when(which) {
-                    0 -> {
+                    MAKE_PHOTO -> {
                         if(shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)){
                             showInfoDialog()
                         }else{
                             cameraLauncher.launch(Manifest.permission.CAMERA)
                         }
                     }
-                    1 ->{
+                    OPEN_GALLERY ->{
                         selectImageFromGallery()
                     }
                 }
@@ -134,8 +137,8 @@ class EditProfileActivity : AppCompatActivity() {
             .setTitle(resources.getString(R.string.info_dialog_title))
             .setMessage(resources.getString(R.string.info_dialog_message))
             .setNegativeButton(resources.getString(R.string.info_dialog_cancel)){
-                _, _ ->
-                getSetting()
+                dialog, _ ->
+                dialog.cancel()
             }
             .setPositiveButton(resources.getString(R.string.info_dialog_allow)){
                 _ , _ ->
@@ -172,8 +175,17 @@ class EditProfileActivity : AppCompatActivity() {
 
 
         telegramIntent.setPackage("org.telegram.messenger")
+        try {
+            startActivity(telegramIntent)
+        }catch (e : Exception){
+            Toast.makeText(this, "Телеграмм не установлен", Toast.LENGTH_SHORT).show()
+        }
 
-        startActivity(telegramIntent)
+    }
+
+    companion object{
+        private const val MAKE_PHOTO = 0
+        private const val OPEN_GALLERY = 1
     }
 
 }
