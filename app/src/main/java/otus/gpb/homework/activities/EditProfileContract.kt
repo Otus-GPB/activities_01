@@ -24,9 +24,7 @@ class EditProfileContract: ActivityResultContract<String?, Profile?>() {
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): Profile? {
-        if (intent == null) return null
-        if (resultCode != Activity.RESULT_OK) return null
-
+        if (intent == null || resultCode != Activity.RESULT_OK) return null
         return intent.getParcelableExtra(EXTRA_MESSAGE)
     }
 }

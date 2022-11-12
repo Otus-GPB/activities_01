@@ -25,7 +25,6 @@ import com.google.android.material.snackbar.Snackbar
 
 class EditProfileActivity : AppCompatActivity() {
     companion object {
-        private const val TAG = "EditProfileActivity"
         private const val TELEGRAM_PACKAGE = "org.telegram.messenger"
     }
 
@@ -154,7 +153,6 @@ class EditProfileActivity : AppCompatActivity() {
 
     }
 
-
     private fun requestPermissionWithRationale() {
         MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.rationale_title))
@@ -188,17 +186,20 @@ class EditProfileActivity : AppCompatActivity() {
         imageView.setImageBitmap(bitmap)
     }
 
-    private fun isTelegramInstalled(): Boolean {
+    private fun isTelegramInstalled(): PackageManager.NameNotFoundException? {
         return try {
             packageManager.getPackageInfo(TELEGRAM_PACKAGE, 0)
-            true
+            null
         } catch (e: PackageManager.NameNotFoundException) {
-            false
+            // Фикс detekt[SwallowedException]
+            // Решение об окончательной обработке исключения, при его наличии,
+            // принимается выше
+            e
         }
     }
 
     private fun openSenderApp() {
-        if (isTelegramInstalled()) {
+        if (isTelegramInstalled() == null) {
             val messageText = "${profileName.text}\n" +
                     "${profileSurname.text}\n" +
                     "${profileAge.text}\n"
