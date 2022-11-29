@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="title" />
+    <string name="accept">Дать доступ</string>
+    <string name="decline">Отмена</string>
+    <string name="supporting_text">Разрешение на использование «Камеры» необходимо, чтобы вы могли сделать фотографию</string>
+    <string name="settings_text">Открыть настройки</string>
+
 </resources>
