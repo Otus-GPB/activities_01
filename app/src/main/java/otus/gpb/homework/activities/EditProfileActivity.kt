@@ -1,7 +1,7 @@
 package otus.gpb.homework.activities
 
-import android.Manifest
-import android.app.Activity
+import android.Manifest.permission.CAMERA
+import android.content.ActivityNotFoundException
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -12,22 +12,22 @@ import androidx.appcompat.widget.Toolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.provider.MediaStore
 import android.provider.Settings
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 
-const val telegramManager = "org.telegram.messenger"
+const val TELEGRAM_MANAGER = "org.telegram.messenger"
 
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
-    private lateinit var textName: TextView
-    private lateinit var textSurname: TextView
-    private lateinit var textAge: TextView
-    private lateinit var imageUri: Uri
+    private lateinit var name: TextView
+    private lateinit var surname: TextView
+    private lateinit var age: TextView
+    private var imageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,15 +47,15 @@ class EditProfileActivity : AppCompatActivity() {
             }
         }
 
-        textName = findViewById(R.id.textview_name)
-        textSurname = findViewById(R.id.textview_surname)
-        textAge = findViewById(R.id.textview_age)
+        name = findViewById(R.id.textview_name)
+        surname = findViewById(R.id.textview_surname)
+        age = findViewById(R.id.textview_age)
 
-        imageView.setOnClickListener() {
+        imageView.setOnClickListener {
             selectActionDialog()
         }
 
-        findViewById<Button>(R.id.button4).setOnClickListener() {
+        findViewById<Button>(R.id.button4).setOnClickListener {
             activityLauncher.launch(Intent(this, FillFormActivity::class.java))
         }
 
@@ -80,21 +80,23 @@ class EditProfileActivity : AppCompatActivity() {
             .show()
     }
 
-    private val activityLauncher= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+    private val activityLauncher= registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()){
         result -> if (result.resultCode == RESULT_OK) {
             result.data?.let {
-                textName.text = it.getStringExtra(USER_NAME)
-                textSurname.text = it.getStringExtra(USER_SURNAME)
-                textAge.text = it.getStringExtra(USER_AGE)
+                name.text = it.getStringExtra(USER_NAME)
+                surname.text = it.getStringExtra(USER_SURNAME)
+                age.text = it.getStringExtra(USER_AGE)
             }
         }
     }
 
-    private val cameraLauncher= registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+    private val cameraLauncher= registerForActivityResult(
+        ActivityResultContracts.RequestPermission()) {
             granted ->
         if (granted) {
             openCatPhoto()
-        } else if (!shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+        } else if (!shouldShowRequestPermissionRationale(CAMERA)) {
             showSettingsDialog()
         }
     }
@@ -108,7 +110,7 @@ class EditProfileActivity : AppCompatActivity() {
             .setTitle(resources.getString(R.string.rationale_title))
             .setMessage(resources.getString(R.string.rationale_message))
             .setPositiveButton(resources.getString(R.string.open_access)) {dialog, _ ->
-                cameraLauncher.launch(Manifest.permission.CAMERA)
+                cameraLauncher.launch(CAMERA)
                 dialog.dismiss()
             }
             .setNegativeButton(resources.getString(R.string.cancel)) {dialog, _ ->
@@ -118,13 +120,13 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun getPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, CAMERA) == PackageManager.PERMISSION_GRANTED) {
             openCatPhoto()
         } else {
-            if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+            if (shouldShowRequestPermissionRationale(CAMERA)) {
                 showRationaleDialog()
             } else {
-                cameraLauncher.launch(Manifest.permission.CAMERA)
+                cameraLauncher.launch(CAMERA)
             }
         }
     }
@@ -135,21 +137,17 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun selectActionDialog() {
-        val singleItems = arrayOf(resources.getString(R.string.take_photo), resources.getString(R.string.select_photo))
-        val checkedItem = 0
-
         MaterialAlertDialogBuilder(this)
             .setTitle(resources.getString(R.string.title))
-            .setSingleChoiceItems(singleItems, checkedItem) { dialog, which ->
-                when(which) {
-                    0 -> {
-                        getPermission()
-                        dialog.dismiss()
-                    }
-                    1 -> {
-                        getPhotoFromGallery()
-                        dialog.dismiss()
-                    }
+            .setItems(
+                arrayOf(
+                    getString(R.string.take_photo),
+                    getString(R.string.select_photo)
+                )
+            ) {_, which ->
+                when (which) {
+                    0 -> getPermission()
+                    1 -> getPhotoFromGallery()
                 }
             }
             .show()
@@ -168,13 +166,15 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun openSenderApp() {
        // TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
-        val intentSend = Intent(Intent.ACTION_SEND)
+        try {
+            val intentSend = Intent(Intent.ACTION_SEND)
             intentSend.type = "text/plain"
-            intentSend.putExtra(Intent.EXTRA_TEXT, "${textName.text}, ${textSurname.text}, ${textAge.text}")
-            intentSend.setPackage(telegramManager)
+            intentSend.putExtra(Intent.EXTRA_TEXT, "${name.text}, ${surname.text}, ${age.text}")
+            intentSend.setPackage(TELEGRAM_MANAGER)
             intentSend.putExtra(Intent.EXTRA_STREAM, imageUri)
-
-
-        startActivity(intentSend);
+            startActivity(intentSend)
+        } catch(exception: ActivityNotFoundException) {
+            Toast.makeText(this, getString(R.string.telegram), Toast.LENGTH_SHORT).show()
+        }
     }
 }

@@ -16,4 +16,5 @@
     <string name="enter_name">Введите имя</string>
     <string name="enter_age">Введите возраст</string>
     <string name="apply">Применить</string>
+    <string name="telegram">Телеграм не установлен!</string>
 </resources>
