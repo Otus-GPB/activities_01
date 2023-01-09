@@ -12,10 +12,9 @@ class ActivityA : AppCompatActivity() {
 
         val button = findViewById<Button>(R.id.btnOpenB)
         button.setOnClickListener {
-            startActivity(Intent(this, ActivityB::class.java))
             startActivity(
                 Intent(this, ActivityB::class.java)
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
             )
         }
     }
