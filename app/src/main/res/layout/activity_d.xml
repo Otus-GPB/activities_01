@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ActivityD"
-    android:background="#FFF4C2">
+    android:background="#ffeb3b">
 
     <TextView
         android:id="@+id/textViewActivityD"
