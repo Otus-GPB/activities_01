@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Activities</string>
+    <string name="app_name">Activities 2</string>
     <string name="titleA">Activity A</string>
     <string name="openB">Open Activity B</string>
     <string name="titleB">Activity B</string>
@@ -7,7 +7,7 @@
     <string name="titleC">Activity C</string>
     <string name="openA">Open Activity A</string>
     <string name="openD">Open Activity D</string>
-    <string name="closeC">Open Activity C</string>
+    <string name="closeC">Close Activity C</string>
     <string name="closeStack">Close Stack</string>
     <string name="titleD">Avtivity D</string>
 </resources>
